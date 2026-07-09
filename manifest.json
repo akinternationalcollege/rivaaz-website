@@ -1,35 +1,44 @@
 {
   "name": "Rivaaz - Event Professionals",
   "short_name": "Rivaaz",
-  "description": "Har Mehfil Ke Liye - Book verified event professionals in Laxmangarh.",
+  "description": "Har Mehfil Ke Liye - Book verified event professionals in Laxmangarh. Hire waiters, chefs, security, and more instantly.",
   "start_url": "/index.html",
-  "id": "/",
+  "id": "/?source=pwa",
   "display": "standalone",
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui"
+  ],
   "background_color": "#050505",
   "theme_color": "#D4AF37",
   "orientation": "portrait-primary",
   "lang": "hi",
   "dir": "ltr",
+  "scope": "/",
   "categories": [
     "business",
     "events",
     "lifestyle"
   ],
+  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
+  "prefer_related_applications": false,
+  "related_applications": [],
   "icons": [
     {
-      "src": "https://raw.githubusercontent.com/pwa-builder/pwabuilder-web/main/assets/icons/icon_192.png",
+      "src": "/11-Photoroom.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "https://raw.githubusercontent.com/pwa-builder/pwabuilder-web/main/assets/icons/icon_512.png",
+      "src": "/11-Photoroom.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "https://raw.githubusercontent.com/pwa-builder/pwabuilder-web/main/assets/icons/icon_512.png",
+      "src": "/11-Photoroom.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
@@ -37,18 +46,18 @@
   ],
   "screenshots": [
     {
-      "src": "https://raw.githubusercontent.com/pwa-builder/pwabuilder-web/main/assets/screenshots/screen1.png",
-      "sizes": "2880x1800",
+      "src": "https://dummyimage.com/1280x720/1A1A1A/D4AF37.png",
+      "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Rivaaz Event Booking"
+      "label": "Rivaaz Desktop View"
     },
     {
-      "src": "https://raw.githubusercontent.com/pwa-builder/pwabuilder-web/main/assets/screenshots/screen2.png",
-      "sizes": "1080x1920",
+      "src": "https://dummyimage.com/720x1280/1A1A1A/D4AF37.png",
+      "sizes": "720x1280",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "Rivaaz Mobile Booking"
+      "label": "Rivaaz Mobile View"
     }
   ],
   "shortcuts": [
@@ -59,11 +68,52 @@
       "url": "/index.html#categories",
       "icons": [
         {
-          "src": "https://raw.githubusercontent.com/pwa-builder/pwabuilder-web/main/assets/icons/icon_192.png",
+          "src": "/11-Photoroom.png",
           "sizes": "192x192",
-          "type": "image/png"
+          "type": "image/png",
+          "purpose": "any"
         }
       ]
+    }
+  ],
+  "share_target": {
+    "action": "/index.html",
+    "method": "GET",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "file_handlers": [
+    {
+      "action": "/index.html",
+      "accept": {
+        "text/plain": [
+          ".txt"
+        ]
+      }
+    }
+  ],
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "protocol_handlers": [
+    {
+      "protocol": "web+rivaaz",
+      "url": "/index.html?mode=%s"
+    }
+  ],
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "note_taking": {
+    "new_note_url": "/index.html"
+  },
+  "scope_extensions": [
+    {
+      "origin": "*.rivaaz.work.gd"
     }
   ]
 }
