@@ -149,7 +149,7 @@
   .foot-bottom{text-align:center; font-size:0.78rem; color:var(--ivory-dim); border-top:1px solid var(--line); padding-top:24px;}
 
   /* modals */
-  .modal-overlay{position:fixed; inset:0; background:rgba(10,8,6,0.75); backdrop-filter:blur(4px); display:none; align-items:center; justify-content:center; z-index:500; padding:20px;}
+  .modal-overlay{position:fixed; inset:0; background:rgba(10,8,6,0.75); backdrop-filter:blur(4px); display:none; align-items:center; justify-content:center; z-index:1000; padding:20px;}
   .modal-overlay.show{display:flex;}
   .modal-box{background:var(--ink-soft); border:1px solid var(--line); border-radius:4px; padding:32px; max-width:440px; width:100%; max-height:85vh; overflow-y:auto; position:relative;}
   .modal-box h3{color:var(--ivory); margin-bottom:6px; font-size:1.5rem;}
@@ -505,7 +505,7 @@
 <script>
 const STORAGE_KEY = 'rivaaz:content';
 const LEADS_KEY = 'rivaaz:leads';
-const ADMIN_PIN = '1234';
+const ADMIN_PIN = '9414';
 const DEFAULT_ICON_PATH = 'M12 2l2.9 6.5 7.1.7-5.4 4.7 1.6 7-6.2-3.9-6.2 3.9 1.6-7L2 9.2l7.1-.7z';
 const AVATAR_COLORS = ['#5C1A23','#204B3F','#8a6d1f'];
 
