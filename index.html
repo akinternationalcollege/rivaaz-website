@@ -167,8 +167,8 @@
   .modal-close{position:absolute; top:14px; right:16px; background:none; border:none; color:var(--ivory-dim); font-size:1.5rem; cursor:pointer; line-height:1;}
   .field{margin-bottom:16px;}
   .field label{display:block; font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold); margin-bottom:6px;}
-  .field input, .field textarea{width:100%; background:var(--ink); border:1px solid var(--line); color:var(--ivory); padding:11px 14px; border-radius:2px; font-family:'Manrope'; font-size:0.92rem; outline:none;}
-  .field input:focus, .field textarea:focus{border-color:var(--gold);}
+  .field input, .field textarea, .field select{width:100%; background:var(--ink); border:1px solid var(--line); color:var(--ivory); padding:11px 14px; border-radius:2px; font-family:'Manrope'; font-size:0.92rem; outline:none;}
+  .field input:focus, .field textarea:focus, .field select:focus{border-color:var(--gold);}
   .field textarea{resize:vertical; min-height:70px;}
   .form-actions{margin-top:22px;}
   .btn-secondary{background:transparent; border:1px solid var(--line); color:var(--ivory-dim);}
@@ -228,6 +228,13 @@
     .testi-grid{grid-template-columns:1fr;}
     .foot-grid{grid-template-columns:1fr 1fr; gap:30px;}
   }
+  .field select option { background: var(--ink-card); color: var(--ivory); }
+
+  /* Calendar Date Picker Styling for Dark Mode */
+  ::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; opacity: 0.6; transition: opacity 0.2s; }
+  ::-webkit-calendar-picker-indicator:hover { opacity: 1; }
+  input[type="date"]::-webkit-datetime-edit { padding: 4px; }
+
 </style>
 </head>
 <body>
@@ -267,11 +274,28 @@
     </div>
     <div>
       <label>City</label>
-      <input type="text" id="heroCity" placeholder="Laxmangarh, Sikar...">
+      <select id="heroCity">
+              <option value="Laxmangarh">Laxmangarh</option>
+              <option value="Sikar">Sikar</option>
+              <option value="Salasar">Salasar</option>
+              <option value="Fatehpur">Fatehpur</option>
+              <option value="Nawalgarh">Nawalgarh</option>
+              <option value="Mukundgarh">Mukundgarh</option>
+              <option value="Dhod">Dhod</option>
+              <option value="Nechhwa">Nechhwa</option>
+              <option value="Ramgarh Shekhawati">Ramgarh Shekhawati</option>
+              <option value="Sujangarh">Sujangarh</option>
+      </select>
     </div>
-    <div>
-      <label>Event Date</label>
-      <input type="text" id="heroDate" placeholder="DD/MM/YYYY" maxlength="10">
+    <div style="position:relative;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+        <label style="margin-bottom:0;">Event Date</label>
+        <label style="display:flex; align-items:center; gap:4px; cursor:pointer; color:var(--gold-bright); font-weight:700; text-transform:none; letter-spacing:0; font-size:0.66rem;">
+          <input type="checkbox" id="heroUrgent" style="width:12px; height:12px; accent-color:#e66; cursor:pointer;"> 
+          Urgent?
+        </label>
+      </div>
+      <input type="date" id="heroDate" style="color:var(--ivory); cursor:pointer;">
     </div>
     <button class="search-btn" id="heroSearchBtn">Search</button>
   </div>
@@ -379,8 +403,28 @@
         <div class="field"><label>Service</label><input type="text" id="bkService" required></div>
         <div class="field"><label>Aapka Naam</label><input type="text" id="bkName" required></div>
         <div class="field"><label>Phone Number</label><input type="tel" id="bkPhone" required></div>
-        <div class="field"><label>City</label><input type="text" id="bkCity" required></div>
-        <div class="field"><label>Event Date</label><input type="text" id="bkDate" placeholder="DD/MM/YYYY" maxlength="10"></div>
+        <div class="field"><label>City</label><select id="bkCity" required>
+              <option value="Laxmangarh">Laxmangarh</option>
+              <option value="Sikar">Sikar</option>
+              <option value="Salasar">Salasar</option>
+              <option value="Fatehpur">Fatehpur</option>
+              <option value="Nawalgarh">Nawalgarh</option>
+              <option value="Mukundgarh">Mukundgarh</option>
+              <option value="Dhod">Dhod</option>
+              <option value="Nechhwa">Nechhwa</option>
+              <option value="Ramgarh Shekhawati">Ramgarh Shekhawati</option>
+              <option value="Sujangarh">Sujangarh</option>
+        </select></div>
+        <div class="field">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <label style="margin-bottom:0;">Event Date</label>
+            <label style="display:flex; align-items:center; gap:6px; cursor:pointer; color:var(--gold-bright); font-weight:700; text-transform:none; letter-spacing:0; font-size:0.8rem;">
+              <input type="checkbox" id="bkUrgent" style="width:16px; height:16px; accent-color:#e66; cursor:pointer;"> 
+              Urgent? (Today/Tomorrow)
+            </label>
+          </div>
+          <input type="date" id="bkDate" style="color:var(--ivory); cursor:pointer;">
+        </div>
         <div class="field"><label>Extra Details</label><textarea id="bkNotes"></textarea></div>
         <div class="form-actions"><button type="button" class="btn btn-block" id="bookingSubmitBtn">Request Bhejein</button></div>
       </div>
@@ -394,28 +438,60 @@
   </div>
 </div>
 
-<!-- Vendor Signup Modal -->
-<div class="modal-overlay" id="vendorModal">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeModal('vendorModal')">&times;</button>
-    <div id="vendorFormWrap">
-      <h3>Professional Ke Roop Mein Judein</h3>
-      <p class="modal-sub">Apni details bharein, team aapse contact karegi.</p>
-      <div id="vendorForm">
-        <div class="field"><label>Aapka Naam</label><input type="text" id="vName" required></div>
-        <div class="field"><label>Phone Number</label><input type="tel" id="vPhone" required></div>
-        <div class="field"><label>City</label><input type="text" id="vCity" required></div>
-        <div class="field"><label>Aap Kya Kaam Karte Hain</label><input type="text" id="vCategory" placeholder="Jaise: Chef, Dancer, Mehndi..." required></div>
-        <div class="field"><label>Experience (years)</label><input type="text" id="vExp"></div>
-        <div class="form-actions"><button type="button" class="btn btn-block" id="vendorSubmitBtn">Register Karein</button></div>
+<!-- Vendor Signup Full Page -->
+<div class="modal-overlay" id="vendorModal" style="background:var(--ink); padding:0; align-items:flex-start; overflow-y:auto;">
+  <div style="width:100%; min-height:100vh; background:var(--ink); position:relative;">
+    
+    <!-- Header -->
+    <div style="padding:20px 28px; border-bottom:1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between; align-items:center; background:rgba(5,5,5,0.9); position:sticky; top:0; z-index:10; backdrop-filter:blur(20px);">
+      <div class="logo">RIVAAZ<span>.</span></div>
+      <button class="btn btn-secondary" onclick="closeModal('vendorModal')" style="padding:8px 16px; font-size:0.8rem; border-radius:100px;">✕ Wapas Jayein</button>
+    </div>
+
+    <!-- Content -->
+    <div style="max-width:600px; margin:60px auto 100px; padding:0 28px;">
+      <div id="vendorFormWrap">
+        <span class="eyebrow" style="color:var(--gold-bright); display:block; margin-bottom:14px;">Join The Team</span>
+        <h2 style="font-family:'Cormorant Garamond',serif; font-size:clamp(2.5rem,5vw,3.5rem); font-weight:700; color:var(--ivory); line-height:1.1; margin-bottom:16px;">Professional Ke Roop Mein Judein</h2>
+        <p style="color:var(--ivory-dim); margin-bottom:40px; font-size:1.1rem; line-height:1.6;">Rivaaz ke saath judein aur apne shehar mein events par part-time ya full-time kaam paayein. Apni details neeche bharein.</p>
+        
+        <div id="vendorForm" style="background:var(--ink-card); padding:40px 30px; border-radius:24px; border:1px solid rgba(212,175,55,0.1); box-shadow:0 30px 60px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,255,255,0.02);">
+          <div class="field"><label>Aapka Pura Naam</label><input type="text" id="vName" required style="padding:14px; border-radius:8px;"></div>
+          <div class="field"><label>Phone Number (WhatsApp)</label><input type="tel" id="vPhone" placeholder="91XXXXXXXXXX" required style="padding:14px; border-radius:8px;"></div>
+          
+          <div class="field"><label>City / Shehar</label><select id="vCity" required style="width:100%; background:var(--ink); border:1px solid var(--line); color:var(--ivory); padding:14px; border-radius:8px; font-family:'Manrope'; font-size:0.92rem; outline:none;">
+            <option value="Laxmangarh">Laxmangarh</option>
+            <option value="Sikar">Sikar</option>
+            <option value="Salasar">Salasar</option>
+            <option value="Fatehpur">Fatehpur</option>
+            <option value="Nawalgarh">Nawalgarh</option>
+            <option value="Mukundgarh">Mukundgarh</option>
+            <option value="Dhod">Dhod</option>
+            <option value="Nechhwa">Nechhwa</option>
+            <option value="Ramgarh Shekhawati">Ramgarh Shekhawati</option>
+            <option value="Sujangarh">Sujangarh</option>
+          </select></div>
+          
+          <div class="field"><label>Aap Kya Kaam Karte Hain?</label><input type="text" id="vCategory" placeholder="Jaise: Waiter, Chef, Dancer, Mehndi..." required style="padding:14px; border-radius:8px;"></div>
+          <div class="field"><label>Aapka Experience (Saal mein)</label><input type="text" id="vExp" placeholder="Jaise: 3 saal" style="padding:14px; border-radius:8px;"></div>
+          
+          <div class="form-actions" style="margin-top:30px;">
+            <button type="button" class="btn btn-block" id="vendorSubmitBtn" style="font-size:1.1rem; padding:20px; font-weight:800; background:linear-gradient(135deg, var(--gold), #A68621); box-shadow:0 10px 20px var(--gold-glow);">Apply Now (WhatsApp par bhejein)</button>
+          </div>
+        </div>
+      </div>
+      
+      <div id="vendorSuccessWrap" style="display:none; text-align:center; padding:60px 20px; background:var(--ink-card); border-radius:24px; border:1px solid rgba(37,211,102,0.2);">
+        <div style="width:80px; height:80px; background:rgba(37,211,102,0.1); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 24px; color:#25D366;">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        <h3 style="color:var(--ivory); font-size:2rem; margin-bottom:16px; font-family:'Cormorant Garamond',serif;">Application Bhej Di Gayi!</h3>
+        <p style="color:var(--ivory-dim); font-size:1.1rem; margin-bottom:34px;" id="vendorSuccessMsg">Aapki details team ko mil gayi hain. Hum jaldi aapse contact karenge.</p>
+        <a id="vendorWaBtn" href="#" target="_blank" rel="noopener" class="btn btn-block wa-btn" style="display:none; margin-bottom:16px; padding:18px; font-size:1.1rem; border-radius:100px;">WhatsApp Par Turant Bhejein</a>
+        <button type="button" class="btn btn-block btn-secondary" onclick="closeModal('vendorModal')" style="padding:18px; border-radius:100px;">Site Par Wapas Jayein</button>
       </div>
     </div>
-    <div id="vendorSuccessWrap" style="display:none;">
-      <h3>✓ Register Ho Gaya!</h3>
-      <p class="modal-sub" id="vendorSuccessMsg">Team jaldi contact karegi.</p>
-      <a id="vendorWaBtn" href="#" target="_blank" rel="noopener" class="btn btn-block wa-btn" style="display:none;">WhatsApp Par Turant Bhejein</a>
-      <button type="button" class="btn btn-block btn-secondary" onclick="closeModal('vendorModal')" style="margin-top:10px;">Band Karein</button>
-    </div>
+
   </div>
 </div>
 
@@ -455,7 +531,18 @@
       <div class="field"><label>Naam</label><input type="text" id="proFormName" required></div>
       <div class="field"><label>Role (Service)</label><input type="text" id="proFormRole" required></div>
       <div class="field"><label>Phone Number</label><input type="text" id="proFormPhone" placeholder="919876543210" required></div>
-      <div class="field"><label>City</label><input type="text" id="proFormCity" required></div>
+      <div class="field"><label>City</label><select id="proFormCity" required>
+              <option value="Laxmangarh">Laxmangarh</option>
+              <option value="Sikar">Sikar</option>
+              <option value="Salasar">Salasar</option>
+              <option value="Fatehpur">Fatehpur</option>
+              <option value="Nawalgarh">Nawalgarh</option>
+              <option value="Mukundgarh">Mukundgarh</option>
+              <option value="Dhod">Dhod</option>
+              <option value="Nechhwa">Nechhwa</option>
+              <option value="Ramgarh Shekhawati">Ramgarh Shekhawati</option>
+              <option value="Sujangarh">Sujangarh</option>
+        </select></div>
       <div class="field"><label>Rating (jaise 4.8)</label><input type="text" id="proFormRating" required></div>
       <div class="field"><label>Rate (jaise ₹300/hr)</label><input type="text" id="proFormRate" required></div>
       <div class="form-actions"><button type="button" class="btn btn-block" id="proSubmitBtn">Save Karein</button></div>
@@ -486,7 +573,8 @@
       <button class="admin-tab" data-target="tabPros">Professionals</button>
       <button class="admin-tab" data-target="tabTesti">Testimonials</button>
       <button class="admin-tab" data-target="tabHero">Settings</button>
-      <button class="admin-tab" data-target="tabLeads">Requests</button>
+      <button class="admin-tab" data-target="tabBookings">Bookings</button>
+      <button class="admin-tab" data-target="tabVendors">Staff Inquiries</button>
     </div>
     <button class="btn btn-ghost" style="background:transparent; border:1px solid var(--line);" onclick="closeAdmin()">Site Par Wapas</button>
   </div>
@@ -513,8 +601,11 @@
         <button type="button" class="btn" id="heroSubmitBtn">Save Karein</button>
       </div>
     </div>
-    <div class="admin-section" id="tabLeads">
-      <div id="adminLeadsList"></div>
+    <div class="admin-section" id="tabBookings">
+      <div id="adminBookingsList"></div>
+    </div>
+    <div class="admin-section" id="tabVendors">
+      <div id="adminVendorsList"></div>
     </div>
   </div>
 </div>
@@ -852,7 +943,7 @@ enableEnterSubmit('pinModal','pinSubmitBtn');
 function openAdmin(){
   openModal('adminOverlay');
   document.getElementById('adminOverlay').classList.add('show');
-  renderAdminCategories(); renderAdminPros(); renderAdminTesti(); renderAdminLeads();
+  renderAdminCategories(); renderAdminPros(); renderAdminTesti(); renderAdminBookings(); renderAdminVendors();
   document.getElementById('adminWhatsapp').value=siteData.whatsappNumber||'';
   document.getElementById('adminHeroTitle').value=siteData.hero.title;
   document.getElementById('adminHeroHighlight').value=siteData.hero.highlight;
@@ -986,26 +1077,33 @@ document.getElementById('heroSubmitBtn').addEventListener('click', async()=>{
 });
 
 /* Admin: Leads */
-function renderAdminLeads(){
-  const el=document.getElementById('adminLeadsList'); el.innerHTML='';
-  if(leads.length===0){ el.innerHTML='<div class="empty-state">Abhi tak koi request nahi aayi.<br><br><small style="opacity:0.7">Jab bhi koi booking ya vendor request aayegi, wo yahan save hogi aur WhatsApp par bhi jayegi.</small></div>'; return; }
-  leads.forEach(l=>{
+function renderAdminBookings(){
+  const el=document.getElementById('adminBookingsList'); el.innerHTML='';
+  const bLeads = leads.filter(l=>l.type==='booking');
+  if(bLeads.length===0){ el.innerHTML='<div class="empty-state">Abhi tak koi booking request nahi aayi.</div>'; return; }
+  bLeads.forEach(l=>{
     const card=document.createElement('div'); card.className='lead-card';
-    if(l.type==='booking'){
-      card.innerHTML=`<div class="row1"><h4><span class="tag booking">Booking</span>${l.name}</h4><span class="time">${l.time}</span></div>
-        <p><b>Service:</b> ${l.service||'—'}</p><p><b>Phone:</b> ${l.phone}</p><p><b>City:</b> ${l.city}</p><p><b>Date:</b> ${l.date||'—'}</p>${l.notes?`<p><b>Notes:</b> ${l.notes}</p>`:''}
-        <div style="margin-top:10px;"><button class="icon-btn danger" onclick="deleteLead('${l.id}')">✕ Remove</button></div>`;
-    } else {
-      card.innerHTML=`<div class="row1"><h4><span class="tag vendor">Vendor</span>${l.name}</h4><span class="time">${l.time}</span></div>
-        <p><b>Category:</b> ${l.category}</p><p><b>Phone:</b> ${l.phone}</p><p><b>City:</b> ${l.city}</p>${l.exp?`<p><b>Experience:</b> ${l.exp} yrs</p>`:''}
-        <div style="margin-top:10px;"><button class="icon-btn danger" onclick="deleteLead('${l.id}')">✕ Remove</button></div>`;
-    }
+    card.innerHTML=`<div class="row1"><h4><span class="tag booking">Booking</span>${l.name}</h4><span class="time">${l.time}</span></div>
+      <p><b>Service:</b> ${l.service||'—'}</p><p><b>Phone:</b> ${l.phone}</p><p><b>City:</b> ${l.city}</p><p><b>Date:</b> ${l.date||'—'}</p>${l.notes?`<p><b>Notes:</b> ${l.notes}</p>`:''}
+      <div style="margin-top:10px;"><button class="icon-btn danger" onclick="deleteLead('${l.id}')">✕ Remove</button></div>`;
+    el.appendChild(card);
+  });
+}
+function renderAdminVendors(){
+  const el=document.getElementById('adminVendorsList'); el.innerHTML='';
+  const vLeads = leads.filter(l=>l.type==='vendor');
+  if(vLeads.length===0){ el.innerHTML='<div class="empty-state">Abhi tak koi staff inquiry nahi aayi.</div>'; return; }
+  vLeads.forEach(l=>{
+    const card=document.createElement('div'); card.className='lead-card';
+    card.innerHTML=`<div class="row1"><h4><span class="tag vendor">Staff Inquiry</span>${l.name}</h4><span class="time">${l.time}</span></div>
+      <p><b>Category:</b> ${l.category}</p><p><b>Phone:</b> ${l.phone}</p><p><b>City:</b> ${l.city}</p>${l.exp?`<p><b>Experience:</b> ${l.exp}</p>`:''}${l.notes?`<p><b>Notes:</b> ${l.notes}</p>`:''}
+      <div style="margin-top:10px;"><button class="icon-btn danger" onclick="deleteLead('${l.id}')">✕ Remove</button></div>`;
     el.appendChild(card);
   });
 }
 function deleteLead(id){
   leads = leads.filter(l=>l.id!==id);
-  saveLeads(); renderAdminLeads();
+  saveLeads(); renderAdminBookings(); renderAdminVendors();
 }
 
 document.querySelector('.menu-toggle').addEventListener('click', ()=>{
@@ -1018,52 +1116,7 @@ document.querySelector('.menu-toggle').addEventListener('click', ()=>{
 loadAll();
 
 
-/* Auto-format date inputs to DD/MM/YYYY */
-function setupDateFormatter(id) {
-  const input = document.getElementById(id);
-  if (!input) return;
-  
-  input.addEventListener('input', function(e) {
-    // If user is deleting, don't reformat
-    if (e.inputType === 'deleteContentBackward' || e.inputType === 'deleteContentForward') {
-      return;
-    }
-    
-    // Remove ALL non-digit characters (including slashes)
-    let val = this.value.replace(/[^0-9]/g, '');
-    
-    // Limit to 8 digits (DDMMYYYY)
-    if (val.length > 8) val = val.substring(0, 8);
-    
-    let formatted = '';
-    // Format DD
-    if (val.length > 0) {
-      formatted = val.substring(0, 2);
-    }
-    // Format MM
-    if (val.length >= 2) {
-      // Add slash only if there are more than 2 digits (i.e. moving into month)
-      if (val.length > 2) {
-        formatted += '/' + val.substring(2, 4);
-      }
-    }
-    // Format YYYY
-    if (val.length >= 4) {
-      // Add slash only if there are more than 4 digits (i.e. moving into year)
-      if (val.length > 4) {
-        formatted += '/' + val.substring(4, 8);
-      }
-    }
-    
-    this.value = formatted;
-  });
-}
 
-// Setup formatters after DOM loads
-document.addEventListener('DOMContentLoaded', () => {
-  setupDateFormatter('heroDate');
-  setupDateFormatter('bkDate');
-});
 
 /* Scroll Animation Observer */
 const observer = new IntersectionObserver((entries) => {
@@ -1074,6 +1127,63 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+
+/* Smart Calendar Restrictions */
+function setupSmartCalendars() {
+  const heroDate = document.getElementById('heroDate');
+  const heroUrgent = document.getElementById('heroUrgent');
+  const bkDate = document.getElementById('bkDate');
+  const bkUrgent = document.getElementById('bkUrgent');
+
+  if (!heroDate || !bkDate) return;
+
+  function setCalendarLimits() {
+    const today = new Date();
+    
+    // Calculate +3 days (Standard minimum booking)
+    const minStandard = new Date(today);
+    minStandard.setDate(today.getDate() + 3);
+    
+    // Calculate +3 years (Maximum booking)
+    const maxDate = new Date(today);
+    maxDate.setFullYear(today.getFullYear() + 3);
+    
+    // Format dates to YYYY-MM-DD for the HTML input
+    const formatStr = (d) => d.toISOString().split('T')[0];
+    const todayStr = formatStr(today);
+    const minStandardStr = formatStr(minStandard);
+    const maxStr = formatStr(maxDate);
+
+    // Apply logic to Hero Search Bar
+    if (heroUrgent.checked) {
+      heroDate.min = todayStr; // Can book today or tomorrow
+    } else {
+      heroDate.min = minStandardStr; // Must book 3+ days in advance
+      // If they had an urgent date selected but unchecked the box, clear it
+      if (heroDate.value && heroDate.value < minStandardStr) heroDate.value = '';
+    }
+    heroDate.max = maxStr;
+
+    // Apply logic to Booking Modal
+    if (bkUrgent.checked) {
+      bkDate.min = todayStr;
+    } else {
+      bkDate.min = minStandardStr;
+      if (bkDate.value && bkDate.value < minStandardStr) bkDate.value = '';
+    }
+    bkDate.max = maxStr;
+  }
+
+  // Run on load
+  setCalendarLimits();
+
+  // Run whenever the Urgent checkboxes are clicked
+  heroUrgent.addEventListener('change', setCalendarLimits);
+  bkUrgent.addEventListener('change', setCalendarLimits);
+}
+
+document.addEventListener('DOMContentLoaded', setupSmartCalendars);
 
 /* PWA Service Worker Registration */
 if ('serviceWorker' in navigator) {
