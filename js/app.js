@@ -102,7 +102,15 @@ async function loadAll(){
 
   try{
     const res = await withRetry(()=>window.storage.get(STORAGE_KEY, true));
-    if(res && res.value){ siteData = JSON.parse(res.value); renderAll(); }
+    if(res && res.value){
+      siteData = JSON.parse(res.value);
+      // Force seeded professionals if storage has fewer than 18
+      if (!siteData.professionals || siteData.professionals.length < 18) {
+        siteData.professionals = DEFAULT_DATA.professionals;
+        saveSite();
+      }
+      renderAll();
+    }
   }catch(e){
     saveSite(); // first-ever run: seed storage with defaults for next time
   }
@@ -169,7 +177,7 @@ function renderProfessionals(){
         </div>
       </div>
       <div class="pro-card-bottom">
-        <a href="tel:+${p.phone||''}" class="action-btn btn-call" onclick="event.stopPropagation()">📞 Call</a>
+        <a href="tel:+916376213281" class="action-btn btn-call" onclick="event.stopPropagation()">📞 Call</a>
         <button class="action-btn btn-book" onclick="openBooking('${p.role}', '${p.name}'); event.stopPropagation()">Book Now</button>
       </div>
     `;
@@ -265,19 +273,27 @@ if(bookingSubmitBtnEl) bookingSubmitBtnEl.addEventListener('click', async()=>{
   document.getElementById('bookingFormWrap').style.display='none';
   document.getElementById('bookingSuccessWrap').style.display='block';
 
-  // Use the admin set WhatsApp number, fallback to default if not set
-  const waNumber = siteData.whatsappNumber || '6376213281';
+  // Hardcoded WhatsApp destination number
+  const waNumber = '916376213281';
 
   const waLink = buildWaLink(waNumber, `Naya Booking Request — Rivaaz\nService: ${lead.service||'-'}\nNaam: ${lead.name}\nPhone: ${lead.phone}\nCity: ${lead.city}\nDate: ${lead.date||'-'}\nNotes: ${lead.notes||'-'}`);
   if(waLink){
     // Automatically redirect to WhatsApp
     window.open(waLink, '_blank');
 
-    waBtn.href = waLink; waBtn.style.display='block';
-    document.getElementById('bookingSuccessMsg').textContent = 'Aapko WhatsApp par redirect kiya ja raha hai... Agar nahi hua to neeche button dabayein.';
+    const waBtn = document.getElementById('bookingWaBtn');
+    if(waBtn) {
+      waBtn.href = waLink; waBtn.style.display='block';
+    }
+    const successMsg = document.getElementById('bookingSuccessMsg');
+    if(successMsg) {
+      successMsg.textContent = 'Aapko WhatsApp par redirect kiya ja raha hai... Agar nahi hua to neeche button dabayein.';
+    }
   } else {
-    waBtn.style.display='none';
-    document.getElementById('bookingSuccessMsg').textContent = 'Hum jaldi contact karenge.';
+    const waBtn = document.getElementById('bookingWaBtn');
+    if(waBtn) waBtn.style.display='none';
+    const successMsg = document.getElementById('bookingSuccessMsg');
+    if(successMsg) successMsg.textContent = 'Hum jaldi contact karenge.';
   }
 });
 enableEnterSubmit('bookingModal','bookingSubmitBtn');
