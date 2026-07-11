@@ -24,12 +24,24 @@ const DEFAULT_DATA = {
     {id:'c13', name:'Bodyguard / Security', rate:'₹400/hr', icon:'M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z'}
   ],
   professionals: [
-    {id:'p1', name:'Arjun Verma', role:'Head Waiter', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
-    {id:'p2', name:'Kavita Rao', role:'Mehndi Artist', city:'Laxmangarh', rating:'5.0', rate:'₹1500/event', phone:'919876543211'},
-    {id:'p3', name:'Imran Sheikh', role:'Folk Musician', city:'Laxmangarh', rating:'4.8', rate:'₹3500/event', phone:'919876543212'},
-    {id:'p4', name:'Priya Nair', role:'Choreographer', city:'Laxmangarh', rating:'4.9', rate:'₹2000/day', phone:'919876543213'},
-    {id:'p5', name:'Sanjay Thapa', role:'Security Lead', city:'Laxmangarh', rating:'4.7', rate:'₹300/hr', phone:'919876543214'},
-    {id:'p6', name:'Meera Joshi', role:'Executive Chef', city:'Laxmangarh', rating:'4.9', rate:'₹600/hr', phone:'919876543215'}
+    {id:'p1', name:'HARISH KUMAR', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p2', name:'HIMANSHU', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p3', name:'JANMEJAY SHARMA', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p4', name:'MANOJ MAHRIYA', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p5', name:'POOJA KUMARI', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p6', name:'RAJKUMAR', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p7', name:'VIKRAM NAYAK', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p8', name:'YUVRAJ AJAY BALAN KUMAR', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p9', name:'ASHOK KUMAR', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p10', name:'DINESH', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p11', name:'JEEVAN', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p12', name:'KRISHAN KUMAR', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p13', name:'MAITRYEE SHARMA', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p14', name:'MUNESH SAINI KUMAR', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p15', name:'PANKAJ KUMAR', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p16', name:'RAHUL', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p17', name:'RAJESH KUMAR', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p18', name:'VIKRAM POONIA', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'}
   ],
   testimonials: [
     {id:'t1', quote:'Shaadi se 2 din pehle dancer cancel hua, Rivaaz se 4 ghante mein replacement mil gaya.', who:'Neha Agarwal', where:'Jaipur · Wedding, 400 guests'},
@@ -142,15 +154,18 @@ function renderProfessionals(){
   if(!document.getElementById('proRow')) return;
   const row=document.getElementById('proRow'); row.innerHTML='';
   siteData.professionals.forEach((p,i)=>{
-    const initials=p.name.split(' ').map(w=>w[0]).join('');
     const card=document.createElement('div'); card.className='pro-card';
+    const avatarHtml = p.pic
+      ? `<img src="${p.pic}" alt="${p.name}" class="avatar" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold);">`
+      : `<div class="avatar" style="background:${AVATAR_COLORS[i%3]};">${p.name.split(' ').map(w=>w[0]).join('')}</div>`;
+
     card.innerHTML=`
       <div class="pro-card-top">
-        <div class="avatar" style="background:${AVATAR_COLORS[i%3]};">${initials}</div>
+        ${avatarHtml}
         <div style="flex:1;">
           <h4>${p.name}</h4><div class="role">${p.role}</div>
           <div class="meta"><span>${p.city}</span><span>★ ${p.rating}</span></div>
-          <div class="meta" style="margin-top:6px;"><span></span><span style="color:var(--gold);">${p.rate}</span></div>
+          <div class="meta" style="margin-top:6px;"><span>Experience: ${p.experience || 'N/A'}</span><span style="color:var(--gold);">${p.rate}</span></div>
         </div>
       </div>
       <div class="pro-card-bottom">
@@ -407,18 +422,30 @@ function renderAdminPros(){
   if(!document.getElementById('adminProList')) return;
   const el=document.getElementById('adminProList'); el.innerHTML='';
   if(siteData.professionals.length===0){ el.innerHTML='<div class="empty-state">Koi professional nahi hai.</div>'; return; }
-  siteData.professionals.forEach(p=>{
+  siteData.professionals.forEach((p,i)=>{
     const row=document.createElement('div'); row.className='admin-row';
-    row.innerHTML=`<div class="info"><h4>${p.name} — ${p.role}</h4><span>${p.city} · ★${p.rating} · ${p.rate}</span></div>
+    const avatarHtml = p.pic
+      ? `<img src="${p.pic}" alt="${p.name}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid var(--gold); margin-right: 12px; vertical-align: middle;">`
+      : `<div style="width: 40px; height: 40px; border-radius: 50%; background: ${AVATAR_COLORS[i%3]}; color: white; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; vertical-align: middle; font-weight: bold;">${p.name.split(' ').map(w=>w[0]).join('')}</div>`;
+
+    row.innerHTML=`<div class="info" style="display: flex; align-items: center;">
+        ${avatarHtml}
+        <div>
+          <h4>${p.name} — ${p.role}</h4>
+          <span>Exp: ${p.experience || 'N/A'} · ${p.city} · ★${p.rating} · ${p.rate}</span>
+        </div>
+      </div>
       <div class="actions"><button class="icon-btn" onclick="addOrEditProForm('${p.id}')">✎</button><button class="icon-btn danger" onclick="deletePro('${p.id}')">✕</button></div>`;
     el.appendChild(row);
   });
 }
 function addOrEditProForm(id){
   editing={type:'pro', id:id||null};
-  const p = id ? siteData.professionals.find(x=>x.id===id) : {name:'',role:'',city:'',rating:'',rate:'',phone:''};
+  const p = id ? siteData.professionals.find(x=>x.id===id) : {name:'',role:'',experience:'',pic:'',city:'',rating:'',rate:'',phone:''};
   document.getElementById('proFormName').value=p.name;
   document.getElementById('proFormRole').value=p.role;
+  document.getElementById('proFormExp').value=p.experience||'';
+  document.getElementById('proFormPic').value=p.pic||'';
   document.getElementById('proFormPhone').value=p.phone||'';
   document.getElementById('proFormCity').value=p.city;
   document.getElementById('proFormRating').value=p.rating;
@@ -433,7 +460,7 @@ function deletePro(id){
 }
 const proSubmitBtnEl = document.getElementById('proSubmitBtn');
 if(proSubmitBtnEl) proSubmitBtnEl.addEventListener('click', async()=>{
-  const vals={ name:document.getElementById('proFormName').value.trim(), role:document.getElementById('proFormRole').value.trim(), phone:document.getElementById('proFormPhone').value.trim(), city:document.getElementById('proFormCity').value.trim(), rating:document.getElementById('proFormRating').value.trim(), rate:document.getElementById('proFormRate').value.trim() };
+  const vals={ name:document.getElementById('proFormName').value.trim(), role:document.getElementById('proFormRole').value.trim(), experience:document.getElementById('proFormExp').value.trim(), pic:document.getElementById('proFormPic').value.trim(), phone:document.getElementById('proFormPhone').value.trim(), city:document.getElementById('proFormCity').value.trim(), rating:document.getElementById('proFormRating').value.trim(), rate:document.getElementById('proFormRate').value.trim() };
   if(!vals.name||!vals.role||!vals.city){ showToast('Naam, role aur city zaroori hain.'); return; }
   if(editing.id){ Object.assign(siteData.professionals.find(x=>x.id===editing.id), vals); }
   else{ siteData.professionals.push({id:'pro_'+Date.now(), ...vals}); }
