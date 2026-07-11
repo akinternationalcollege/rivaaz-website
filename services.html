@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rivaaz — Har Mehfil Ke Liye</title>
+<title>Rivaaz — Services & Vision</title>
 <meta name="google-site-verification" content="KqpsKeE9tyPKucKi8FmVeZP1J1i8-LZOdSF_olsSRkQ" />
 
 <meta name="description" content="Rivaaz - Hire verified waiters, chefs, security, and event professionals in Laxmangarh. Instant booking for weddings, parties, and events.">
@@ -16,7 +16,6 @@
 <meta property="og:description" content="Book verified professionals for your next event in Laxmangarh. Waiters, chefs, dancers, and more.">
 <meta property="og:url" content="https://www.rivaaz.work.gd/">
 <meta property="og:type" content="website">
-
 
 <!-- PWA Meta Tags -->
 <link rel="manifest" href="manifest.json">
@@ -50,7 +49,193 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/global.css">
+<style>
+  /* Premium Specific Styles for Services Page */
+  .hero-services {
+    text-align: center;
+    padding: 120px 20px 60px;
+    background: linear-gradient(to bottom, var(--ink) 0%, transparent 100%);
+  }
+  .hero-services h1 {
+    font-size: 4rem;
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .hero-services p {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    color: rgba(255,255,255,0.8);
+  }
+
+  .premium-section {
+    padding: 80px 20px;
+  }
+
+  .premium-section .wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .vision-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    margin-top: 40px;
+  }
+
+  .vision-content h3 {
+    font-size: 2.5rem;
+    color: var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    margin-bottom: 20px;
+  }
+
+  .vision-content p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 20px;
+  }
+
+  .vision-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+  }
+
+  .vision-content li {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    color: #fff;
+  }
+
+  .vision-content li::before {
+    content: "✦";
+    position: absolute;
+    left: 0;
+    top: 2px;
+    color: var(--gold);
+  }
+
+  .package-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+  }
+
+  .package-card {
+    background: var(--ink-card);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    padding: 40px;
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .package-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--gold);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .package-card h4 {
+    color: var(--gold);
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .package-card p {
+    color: rgba(255,255,255,0.7);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 25px;
+  }
+
+  .package-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .package-card:hover .package-btn {
+    background: var(--gold);
+    color: var(--ink);
+  }
+
+  .empowerment-banner {
+    background: linear-gradient(45deg, var(--ink-card), var(--ink));
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 60px;
+    border-radius: 20px;
+    text-align: center;
+    margin-top: 80px;
+  }
+
+  .empowerment-banner h3 {
+    font-size: 2.8rem;
+    color: #fff;
+    font-family: 'Cormorant Garamond', serif;
+    margin-bottom: 20px;
+  }
+
+  .empowerment-banner h3 span {
+    color: var(--gold);
+  }
+
+  .empowerment-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .vision-grid {
+      grid-template-columns: 1fr;
+    }
+    .hero-services h1 {
+      font-size: 2.5rem;
+    }
+    .empowerment-banner {
+      padding: 40px 20px;
+    }
+  }
+</style>
 </head>
 <body>
 
@@ -65,7 +250,7 @@
       <a href="services.html" class="scroll-btn">Professionals</a>
       <a href="join.html" class="scroll-btn">Join as Pro</a>
     </div>
-    
+
     <div style="display:flex; gap:10px;">
       <a href="/rivaaz-app.apk" class="btn scroll-btn" style="background:transparent; color:var(--gold); border:1px solid var(--gold); display:flex; align-items:center; gap:6px;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4483-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993s-.4482.9997-.9993.9997zm-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993s-.4482.9997-.9993.9997zm11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.4162.4162 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2435 13.8533 7.85 12 7.85s-3.5902.3935-5.1367 1.1004L4.841 5.4474a.4162.4162 0 00-.5676-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.1185-9.44z"/></svg>
@@ -76,28 +261,114 @@
     <button class="menu-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 </header>
-<div style="min-height:70vh; padding-top:80px;">
-<section id="categories" class="reveal">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">Categories</span>
-      <h2>Ek hi jagah, poori mehfil ka intezaam</h2>
-      <p>Har role ke liye verified aur experienced professionals — hourly, shift ya full-event basis par.</p>
+
+<main style="min-height:70vh;">
+
+  <!-- Hero Section -->
+  <section class="hero-services reveal">
+    <div class="wrap">
+      <h1>Our Dual Vision</h1>
+      <p>Redefining hospitality through world-class service execution while empowering the backbone of our industry—our workforce.</p>
     </div>
-    <div class="cat-grid reveal-stagger" id="catGrid"></div>
-  </div>
-</section>
+  </section>
 
+  <!-- Section 1: A to Z Event & Hospitality Management -->
+  <section class="premium-section reveal">
+    <div class="wrap">
+      <div class="sec-head" style="text-align:center;">
+        <span class="eyebrow">A to Z Event & Hospitality Management</span>
+        <h2>Everything You Need. Delivered to Perfection.</h2>
+        <p style="max-width:800px; margin: 0 auto; margin-top:20px; color:rgba(255,255,255,0.7);">From sourcing a luxury hotel venue for a grand function to providing specialized services across the hospitality, entertainment, and festive industries—we design and execute full-scale experiences. Tell us your vision, and we orchestrate the reality.</p>
+      </div>
 
-<section id="professionals" class="reveal">
-  <div class="wrap">
-    <div class="sec-head"><span class="eyebrow">Trending This Week</span><h2>Kuch top-rated professionals</h2></div>
-    <div class="pro-row reveal-stagger" id="proRow"></div>
-  </div>
-</section>
+      <div class="package-cards reveal-stagger">
+        <div class="package-card">
+          <h4>The Complete Wedding Package</h4>
+          <p>End-to-end management for your special day. Venue sourcing, premium catering staff, elite security, choreographers, and traditional performers seamlessly integrated.</p>
+          <a href="book.html" class="package-btn">Inquire Now</a>
+        </div>
+        <div class="package-card">
+          <h4>Corporate Hospitality</h4>
+          <p>Sophisticated staffing for corporate galas, seminars, and VIP retreats. Professional hosts, skilled chefs, and discreet security trained in high-end etiquette.</p>
+          <a href="book.html" class="package-btn">Inquire Now</a>
+        </div>
+        <div class="package-card">
+          <h4>Custom Event Architecture</h4>
+          <p>Bespoke solutions for unique festive needs. Whether you need a 50-piece folk dance troupe or a customized culinary team for a week-long festival, we build it.</p>
+          <a href="book.html" class="package-btn">Inquire Now</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- Dynamic Content (App JS Targets) -->
+  <section id="categories" class="reveal" style="padding: 60px 0;">
+    <div class="wrap">
+      <div class="sec-head" style="text-align:center;">
+        <span class="eyebrow">Categories</span>
+        <h2>Ek hi jagah, poori mehfil ka intezaam</h2>
+        <p>Har role ke liye verified aur experienced professionals — hourly, shift ya full-event basis par.</p>
+      </div>
+      <div class="cat-grid reveal-stagger" id="catGrid"></div>
+    </div>
+  </section>
 
-</div>
+  <section id="professionals" class="reveal" style="padding: 60px 0;">
+    <div class="wrap">
+      <div class="sec-head" style="text-align:center;">
+        <span class="eyebrow">Trending This Week</span>
+        <h2>Kuch top-rated professionals</h2>
+      </div>
+      <div class="pro-row reveal-stagger" id="proRow"></div>
+    </div>
+  </section>
+
+  <!-- Section 2: Worker Empowerment & Training -->
+  <section class="premium-section reveal">
+    <div class="wrap">
+      <div class="empowerment-banner">
+        <h3>Empowering the <span>Artisans</span> of Hospitality</h3>
+        <p style="max-width: 700px; margin: 0 auto; font-size: 1.1rem; color: rgba(255,255,255,0.8); line-height: 1.8;">
+          The other side of Rivaaz is deeply rooted in social impact. We provide steady work to all kinds of service industry talent—from musicians and folk dancers to hospitality trainees.
+        </p>
+
+        <div style="text-align: left; max-width: 800px; margin: 40px auto 0;">
+          <ul style="list-style:none; padding:0;">
+            <li style="position:relative; padding-left:30px; margin-bottom:15px; color:#fff;">
+              <span style="position:absolute; left:0; color:var(--gold);">✦</span>
+              <strong>Global Exposure & Stipends:</strong> We give raw talent a chance to experience the world while earning a hard-earned, dignified stipend.
+            </li>
+            <li style="position:relative; padding-left:30px; margin-bottom:15px; color:#fff;">
+              <span style="position:absolute; left:0; color:var(--gold);">✦</span>
+              <strong>Industry-Best Placements:</strong> We place individuals in premium hotels and full-time jobs, ensuring they receive the best salary in the industry, precisely as they demand.
+            </li>
+            <li style="position:relative; padding-left:30px; margin-bottom:15px; color:#fff;">
+              <span style="position:absolute; left:0; color:var(--gold);">✦</span>
+              <strong>Off-Season Security:</strong> We guarantee on-demand work and jobs even during the off-season, providing year-round financial stability.
+            </li>
+          </ul>
+        </div>
+
+        <div class="empowerment-stats">
+          <div class="stat-item">
+            <span class="stat-num">500+</span>
+            <span class="stat-label">Professionals Placed</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">100%</span>
+            <span class="stat-label">Fair Wage Guarantee</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">24/7</span>
+            <span class="stat-label">On-Demand Work</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
 <footer>
   <div class="wrap">
     <div class="foot-grid">
