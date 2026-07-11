@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rivaaz — Har Mehfil Ke Liye</title>
+<title>Rivaaz — The Rivaaz Roster</title>
 <meta name="google-site-verification" content="KqpsKeE9tyPKucKi8FmVeZP1J1i8-LZOdSF_olsSRkQ" />
 
 <meta name="description" content="Rivaaz - Hire verified waiters, chefs, security, and event professionals in Laxmangarh. Instant booking for weddings, parties, and events.">
@@ -16,7 +16,6 @@
 <meta property="og:description" content="Book verified professionals for your next event in Laxmangarh. Waiters, chefs, dancers, and more.">
 <meta property="og:url" content="https://www.rivaaz.work.gd/">
 <meta property="og:type" content="website">
-
 
 <!-- PWA Meta Tags -->
 <link rel="manifest" href="manifest.json">
@@ -50,7 +49,33 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/global.css">
+<style>
+  /* Premium Specific Styles for Professionals Page */
+  .hero-professionals {
+    text-align: center;
+    padding: 120px 20px 60px;
+    background: linear-gradient(to bottom, var(--ink) 0%, transparent 100%);
+  }
+  .hero-professionals h1 {
+    font-size: 4rem;
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .hero-professionals p {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    color: rgba(255,255,255,0.8);
+  }
+
+  @media (max-width: 768px) {
+    .hero-professionals h1 {
+      font-size: 2.5rem;
+    }
+  }
+</style>
 </head>
 <body>
 
@@ -65,7 +90,7 @@
       <a href="professionals.html" class="scroll-btn">Professionals</a>
       <a href="join.html" class="scroll-btn">Join as Pro</a>
     </div>
-    
+
     <div style="display:flex; gap:10px;">
       <a href="/rivaaz-app.apk" class="btn scroll-btn" style="background:transparent; color:var(--gold); border:1px solid var(--gold); display:flex; align-items:center; gap:6px;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4483-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993s-.4482.9997-.9993.9997zm-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993s-.4482.9997-.9993.9997zm11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.4162.4162 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2435 13.8533 7.85 12 7.85s-3.5902.3935-5.1367 1.1004L4.841 5.4474a.4162.4162 0 00-.5676-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.1185-9.44z"/></svg>
@@ -76,54 +101,30 @@
     <button class="menu-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 </header>
-<div style="min-height:70vh; padding-top:80px;">
-<div class="wrap" style="display:flex; justify-content:center; align-items:center; padding: 40px 0;" id="bookingModal">
-  <div class="modal-box">
-    
-    <div id="bookingFormWrap">
-      <h3>Booking Request Bhejein</h3>
-      <p class="modal-sub">Details bharein, hum jaldi contact karenge.</p>
-      <div id="bookingForm">
-        <div class="field"><label>Service</label><input type="text" id="bkService" required></div>
-        <div class="field"><label>Aapka Naam</label><input type="text" id="bkName" required></div>
-        <div class="field"><label>Phone Number</label><input type="tel" id="bkPhone" required></div>
-        <div class="field"><label>City</label><select id="bkCity" required>
-              <option value="Laxmangarh">Laxmangarh</option>
-              <option value="Sikar">Sikar</option>
-              <option value="Salasar">Salasar</option>
-              <option value="Fatehpur">Fatehpur</option>
-              <option value="Nawalgarh">Nawalgarh</option>
-              <option value="Mukundgarh">Mukundgarh</option>
-              <option value="Dhod">Dhod</option>
-              <option value="Nechhwa">Nechhwa</option>
-              <option value="Ramgarh Shekhawati">Ramgarh Shekhawati</option>
-              <option value="Sujangarh">Sujangarh</option>
-        </select></div>
-        <div class="field">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <label style="margin-bottom:0;">Event Date</label>
-            <label style="display:flex; align-items:center; gap:6px; cursor:pointer; color:var(--gold-bright); font-weight:700; text-transform:none; letter-spacing:0; font-size:0.8rem;">
-              <input type="checkbox" id="bkUrgent" style="width:16px; height:16px; accent-color:#e66; cursor:pointer;"> 
-              Urgent? (Today/Tomorrow)
-            </label>
-          </div>
-          <input type="date" id="bkDate" style="color:var(--ivory); cursor:pointer;">
-        </div>
-        <div class="field"><label>Extra Details</label><textarea id="bkNotes"></textarea></div>
-        <div class="form-actions"><button type="button" class="btn btn-block" id="bookingSubmitBtn">Request Bhejein</button></div>
+
+<main style="min-height:70vh;">
+
+  <!-- Hero Section -->
+  <section class="hero-professionals reveal">
+    <div class="wrap">
+      <h1>The Rivaaz Roster</h1>
+      <p>Elite Professionals ready to serve. Discover our top-rated talent for your next event.</p>
+    </div>
+  </section>
+
+  <!-- Dynamic Content (App JS Targets) -->
+  <section id="professionals" class="reveal" style="padding: 60px 0;">
+    <div class="wrap">
+      <div class="sec-head" style="text-align:center;">
+        <span class="eyebrow">Our Talent</span>
+        <h2>Verified Professionals</h2>
       </div>
+      <div class="pro-row reveal-stagger" id="proRow"></div>
     </div>
-    <div id="bookingSuccessWrap" style="display:none;">
-      <h3>✓ Request Save Ho Gaya!</h3>
-      <p class="modal-sub" id="bookingSuccessMsg">Hum jaldi contact karenge.</p>
-      <a id="bookingWaBtn" href="#" target="_blank" rel="noopener" class="btn btn-block wa-btn" style="display:none;">WhatsApp Par Turant Bhejein</a>
-      <a href="index.html" class="btn btn-block btn-secondary" style="margin-top:10px; display:inline-block; text-align:center;">Home Jayein</a>
-    </div>
-  </div>
-</div>
+  </section>
 
+</main>
 
-</div>
 <footer>
   <div class="wrap">
     <div class="foot-grid">
