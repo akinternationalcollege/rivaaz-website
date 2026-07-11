@@ -3,54 +3,164 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rivaaz — Har Mehfil Ke Liye</title>
-<meta name="google-site-verification" content="KqpsKeE9tyPKucKi8FmVeZP1J1i8-LZOdSF_olsSRkQ" />
-
-<meta name="description" content="Rivaaz - Hire verified waiters, chefs, security, and event professionals in Laxmangarh. Instant booking for weddings, parties, and events.">
-<meta name="keywords" content="Rivaaz, event professionals, hire waiters Laxmangarh, wedding staff Sikar, book security guards, mehndi artists, event management">
-<meta name="author" content="Rivaaz">
-<meta name="robots" content="index, follow">
-
-<!-- Open Graph / Social Media -->
-<meta property="og:title" content="Rivaaz — Har Mehfil Ke Liye">
-<meta property="og:description" content="Book verified professionals for your next event in Laxmangarh. Waiters, chefs, dancers, and more.">
-<meta property="og:url" content="https://www.rivaaz.work.gd/">
-<meta property="og:type" content="website">
-
-
-<!-- PWA Meta Tags -->
-<link rel="manifest" href="manifest.json">
+<title>About Rivaaz & AK Group — The Legacy of Excellence</title>
 <meta name="theme-color" content="#D4AF37">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Rivaaz">
-<link rel="apple-touch-icon" href="/11-Photoroom.png">
-
-<!-- Canonical Tag for Google -->
-<link rel="canonical" href="https://www.rivaaz.work.gd/">
-
-<!-- Schema Markup for Local Business -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "name": "Rivaaz",
-  "description": "Platform to hire event professionals like waiters, chefs, and security in Laxmangarh.",
-  "url": "https://www.rivaaz.work.gd/",
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Laxmangarh",
-    "addressRegion": "Rajasthan",
-    "addressCountry": "IN"
-  },
-  "telephone": "+91-6376213281",
-  "priceRange": "₹"
-}
-</script>
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/global.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/global.css">
+<style>
+  /* Specific About Page Premium Styles */
+  .about-hero {
+    min-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    padding: 0 20px;
+    background: radial-gradient(circle at center, rgba(212, 175, 55, 0.08) 0%, var(--ink) 60%);
+  }
+
+  .about-hero::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(212,175,55,0.15) 0%, transparent 70%);
+    z-index: -1;
+    filter: blur(40px);
+    opacity: 0.6;
+  }
+
+  .moon-text {
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 30px;
+    opacity: 0.8;
+  }
+
+  .about-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 8vw, 6.5rem);
+    line-height: 1.05;
+    color: var(--ivory);
+    margin-bottom: 30px;
+    max-width: 1000px;
+    font-weight: 500;
+  }
+
+  .about-title span {
+    color: var(--gold-bright);
+    font-style: italic;
+  }
+
+  .visionary-section {
+    padding: 120px 20px;
+    background: var(--ink-soft);
+    position: relative;
+    border-top: 1px solid rgba(212,175,55,0.1);
+    border-bottom: 1px solid rgba(212,175,55,0.1);
+  }
+
+  .visionary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: center;
+  }
+
+  .visionary-content h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+
+  .visionary-content h4 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.2rem;
+    color: var(--ivory);
+    margin-bottom: 30px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    opacity: 0.8;
+  }
+
+  .visionary-content p {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: var(--ivory-dim);
+    margin-bottom: 24px;
+    font-weight: 300;
+  }
+
+  .legacy-card {
+    background: var(--ink-card);
+    border: 1px solid rgba(212,175,55,0.15);
+    padding: 50px;
+    border-radius: 24px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,255,255,0.02);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .legacy-card::before {
+    content: '"';
+    position: absolute;
+    top: -20px;
+    right: 30px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15rem;
+    color: rgba(212,175,55,0.05);
+    line-height: 1;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 50px;
+    padding-top: 50px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .stat-item h5 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem;
+    color: var(--gold-bright);
+    margin-bottom: 5px;
+  }
+
+  .stat-item p {
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--ivory-dim);
+  }
+
+  .ecosystem-section {
+    padding: 140px 20px;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 900px) {
+    .visionary-grid { grid-template-columns: 1fr; gap: 50px; }
+    .stat-grid { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+    .legacy-card { padding: 40px 24px; }
+  }
+</style>
 </head>
 <body>
 
@@ -61,11 +171,10 @@
     <a href="index.html" class="logo" style="text-decoration:none; color:inherit;">RIVAAZ<span>.</span></a>
     <div class="nav-links">
       <a href="services.html" class="scroll-btn">Services</a>
-      <a href="about.html" class="scroll-btn">About Us</a>
+      <a href="about.html" class="scroll-btn" style="color:var(--gold-bright);">About Us</a>
       <a href="services.html" class="scroll-btn">Professionals</a>
       <a href="join.html" class="scroll-btn">Join as Pro</a>
     </div>
-    
     <div style="display:flex; gap:10px;">
       <a href="/rivaaz-app.apk" class="btn scroll-btn" style="background:transparent; color:var(--gold); border:1px solid var(--gold); display:flex; align-items:center; gap:6px;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4483-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993s-.4482.9997-.9993.9997zm-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993s-.4482.9997-.9993.9997zm11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.4162.4162 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2435 13.8533 7.85 12 7.85s-3.5902.3935-5.1367 1.1004L4.841 5.4474a.4162.4162 0 00-.5676-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.1185-9.44z"/></svg>
@@ -76,25 +185,55 @@
     <button class="menu-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 </header>
-<div style="min-height:70vh; padding-top:80px;">
 
-<div class="wrap" style="max-width:800px; margin:0 auto; padding-bottom:80px;">
-  <h1 style="font-family:'Cormorant Garamond', serif; font-size:4rem; color:var(--gold); text-align:center; margin-bottom:20px;">Rivaaz by AK group</h1>
-  <p style="color:var(--ivory-dim); font-size:1.2rem; line-height:1.8; text-align:center; margin-bottom:60px;">Rivaaz ek pehal hai events aur celebrations ko asaan aur yaadgaar banane ki. Humara lakshya hai aapko bharosemand professionals dena jisse aapka event bina kisi pareshani ke safal ho.</p>
+<div class="about-hero reveal">
+  <div class="moon-text">Stars are many. The Moon is one.</div>
+  <h1 class="about-title">An Ecosystem of <span>Excellence</span> & Hospitality.</h1>
+  <p style="color:var(--ivory-dim); font-size:1.3rem; max-width:700px; line-height:1.7; font-weight:300;">Rivaaz is not just a platform. It is the digital extension of the AK Group's relentless pursuit of perfection in the hospitality sector.</p>
 </div>
-<section id="how" class="reveal" style="background:var(--ink-soft); position:relative; overflow:hidden; padding:140px 0; border:none;">
-  <div class="wrap">
-    <div class="sec-head"><span class="eyebrow">Process</span><h2>Teen aasan step</h2></div>
-    <div class="steps">
-      <div class="step"><div class="num">01</div><h3>Bataiye kya chahiye</h3><p>Service, date, city aur ghanton ki zaroorat batayein.</p></div>
-      <div class="step"><div class="num">02</div><h3>Profile dekhiye, choose kijiye</h3><p>Ratings, rate aur experience dekh kar sahi professional select karein.</p></div>
-      <div class="step"><div class="num">03</div><h3>Book kijiye, celebrate kijiye</h3><p>Booking confirm hote hi sab tayyar — aap sirf mehfil enjoy kijiye.</p></div>
+
+<section class="visionary-section reveal">
+  <div class="visionary-grid">
+    <div class="visionary-content">
+      <span class="eyebrow">The Visionary</span>
+      <h3>Dr. Anupam Sharma</h3>
+      <h4>Founder, AK International College & The AK Group</h4>
+      <p>The story of Rivaaz begins long before the first line of code was written. It begins with a seed capital and a massive dream in 2004, when Dr. Anupam Sharma laid the foundation for what would become a hospitality empire.</p>
+      <p>Driven by unstoppable determination and a sharp vision, Dr. Sharma transformed a modest investment into AK International College—a prestigious institution that officially opened its doors in the 2021-22 academic year. He didn't just build a college; he built a standard.</p>
+      <p>His empathic leadership and innovative teaching methods have shaped the region's approach to service. Rivaaz is built upon this exact DNA: the belief that true hospitality requires steadfastness, grit, and an unwavering commitment to the guest.</p>
+    </div>
+
+    <div class="legacy-card">
+      <h3 style="font-family:'Cormorant Garamond', serif; font-size:2.2rem; color:var(--ivory); margin-bottom:20px; line-height:1.3;">"Carving a path for others to follow, exemplifying courage and ambition."</h3>
+      <p style="color:var(--ivory-dim); font-size:1.1rem; line-height:1.7;">From educating the finest minds in hospitality at AK International College, to delivering verified, top-tier professionals directly to your events through Rivaaz.</p>
+
+      <div class="stat-grid">
+        <div class="stat-item">
+          <h5>2004</h5>
+          <p>Foundation Laid</p>
+        </div>
+        <div class="stat-item">
+          <h5>#1</h5>
+          <p>Hospitality Pioneer</p>
+        </div>
+        <div class="stat-item">
+          <h5>100%</h5>
+          <p>Commitment</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
+<section class="ecosystem-section reveal">
+  <span class="eyebrow" style="color:var(--gold);">The Architecture</span>
+  <h2 style="font-family:'Cormorant Garamond', serif; font-size:3.5rem; color:var(--ivory); margin-bottom:30px;">Engineered for the Future</h2>
+  <p style="color:var(--ivory-dim); font-size:1.2rem; line-height:1.8; margin-bottom:40px;">While Dr. Sharma provided the vision and the standard of excellence, the digital infrastructure of Rivaaz was architected to be as flawless as the service it provides. Built as a lightning-fast, highly optimized web application, it bridges the gap between traditional hospitality and modern technology.</p>
+  <div style="display:inline-block; border:1px solid rgba(212,175,55,0.3); padding:15px 30px; border-radius:100px; background:rgba(212,175,55,0.05); box-shadow:0 0 20px rgba(212,175,55,0.1);">
+    <span style="font-family:'Manrope', sans-serif; font-size:0.9rem; color:var(--ivory); letter-spacing:1px; text-transform:uppercase;">Platform Developed by <strong style="color:var(--gold-bright);">MR. JA Sharma</strong></span>
+  </div>
+</section>
 
-</div>
 <footer>
   <div class="wrap">
     <div class="foot-grid">
@@ -122,11 +261,7 @@
     <div class="foot-bottom">Rivaaz by <b>AK group</b> &middot; &copy; 2026 &middot; Live at <b>rivaaz.work.gd</b><br><span style="font-size:0.7rem; opacity:0.6; display:block; margin-top:8px;">Developed by MR. JA Sharma (Janmejay Ansh Sharma)</span></div>
   </div>
 </footer>
-<a href="https://wa.me/916376213281?text=Hi%20Rivaaz%20team,%20mujhe%20kuch%20help%20chahiye!" target="_blank" rel="noopener" class="float-wa pulse" title="Chat on WhatsApp">
-  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-  </svg>
-</a>
+
 <script src="js/app.js"></script>
 </body>
 </html>
