@@ -1,0 +1,89 @@
+================================================================================
+RIVAAZ PROJECT CONTEXT & ARCHITECTURE DOCUMENT
+Created: July 2026
+Domain: https://www.rivaaz.work.gd/
+================================================================================
+
+1. PROJECT OVERVIEW
+-------------------
+Rivaaz is an event professional booking platform focused on Laxmangarh and surrounding cities (Sikar, Salasar, Fatehpur, etc.). 
+The platform connects clients with verified professionals (waiters, chefs, dancers, security) for events like weddings and parties.
+It is built as a highly premium, single-page web application (SPA) with no heavy backend—relying entirely on local browser storage for admin logs and the WhatsApp Business API (via direct URL redirects) for lead generation.
+
+2. DESIGN SYSTEM & VIBE
+-----------------------
+- Theme: Ultra-Premium "OLED" Dark Mode.
+- Colors: Deep Blacks (--ink:#050505), Glassy Cards (--ink-card:#1A1A1A), and Glowing Gold (--gold:#D4AF37, --gold-bright:#F9E596).
+- Typography: 'Cormorant Garamond' for massive, cinematic headlines (clamp up to 7.5rem); 'Manrope' for clean UI text.
+- Effects: Heavy use of Glassmorphism (backdrop-filter: blur(20px)) on the header and search bar.
+- Animations: Deep shadow hovers that scale cards up, and a staggered "cascade" scroll reveal so elements glide up beautifully as the user scrolls.
+
+3. ARCHITECTURE & HOSTING
+-------------------------
+- Hosting: GitHub Pages (Repository: rivaaz-website).
+- DNS Provider: DNSExit.
+- Domain Configuration: 
+  -> A Records (4x) pointing to GitHub Pages IPs (185.199.108.153, etc.).
+  -> CNAME for 'www' pointing to akinternationalcollege.github.io.
+- SSL: Enforced HTTPS via GitHub Pages.
+
+4. PROGRESSIVE WEB APP (PWA) & APK
+----------------------------------
+- The site is a fully compliant PWA with a perfect 45/45 score from PWABuilder.
+- It includes a `manifest.json` (with strict sizes, screenshots, shortcuts, and categories) and a `sw.js` (Service Worker for offline caching).
+- App Icon: Uses `11-Photoroom.png` (a golden star logo).
+- APK: We generated a raw Android `rivaaz-app.apk` and added a direct "App" download button in the website header next to "Hire Now".
+
+5. CORE FUNCTIONALITIES
+-----------------------
+A. The Smart Calendar:
+   - Native HTML5 date pickers used for booking dates.
+   - 3-Day Rule: Users are blocked from booking events within the next 72 hours.
+   - "Urgent" Override: A red checkbox allows users to bypass the 3-day rule for emergency Today/Tomorrow bookings.
+
+B. The Vendor Funnel:
+   - Clicking "Join as Professional" opens a massive, full-screen, highly styled overlay (z-index:2000) rather than a small popup.
+   - Captures Name, Phone, City (Dropdown), Category, and Experience.
+
+C. The WhatsApp Integration:
+   - Forms do not send emails. When a user submits a Booking or a Vendor application, JavaScript builds a pre-formatted string.
+   - It automatically executes `window.open('https://wa.me/916376213281?text=...')` to send the lead directly to the admin.
+   - The WhatsApp number is dynamically pulled from the Admin settings (defaulting to 6376213281).
+
+D. The Admin Dashboard (PIN: 9414):
+   - Hidden at the bottom footer link "Admin Login".
+   - It saves all settings and histories entirely via `localStorage` (wrapped in a `safeStorage` promise fallback).
+   - TABS:
+     1. Categories: Add/edit services and base rates.
+     2. Professionals: Add/edit staff cards. Uses a "Service + Price + Call/Book" layout. The "Call" button uses `href="tel:+91..."`.
+     3. Testimonials: Add/edit reviews.
+     4. Settings: Update the Hero headline, subtext, and the master WhatsApp Number.
+     5. Bookings: Permanent log of client event requests.
+     6. Staff Inquiries: Permanent log of professionals applying for jobs.
+
+6. SEO & GOOGLE INTEGRATION
+---------------------------
+- The site contains full Open Graph (OG) tags for social media sharing.
+- It contains `application/ld+json` Schema Markup classifying it as a "LocalBusiness" in Laxmangarh.
+- Verified in Google Search Console using an HTML Meta Tag (`KqpsKeE9tyPKucKi8FmVeZP1J1i8-LZOdSF_olsSRkQ`).
+
+7. PREVIOUS BUGS SOLVED (DO NOT REVERT THESE)
+---------------------------------------------
+- Bug: Date formatting script multiplied slashes (e.g., 10////1/02). 
+  Fix: Removed the custom text-formatting script entirely and replaced it with native `<input type="date">`.
+- Bug: Admin popups appearing behind the admin panel. 
+  Fix: Ensure `.modal-overlay` has `z-index: 1000;` or `2000;` and `.admin-overlay` has `z-index: 600;`.
+- Bug: PWABuilder rejecting the manifest. 
+  Fix: Used reliable image hosting (dummyimage/github) and provided ALL optional fields (iarc_rating, handlers, etc.) in `manifest.json`.
+- Bug: Vercel DNS failing. 
+  Fix: Abandoned Vercel entirely. Switched to GitHub Pages A-Records.
+
+8. CREDITS
+----------
+- Footer officially reads: "Rivaaz by AK group" and "Developed by MR. JA Sharma (Janmejay Ansh Sharma)".
+
+================================================================================
+END OF CONTEXT DOCUMENT. 
+AI INSTRUCTIONS FOR FUTURE SESSIONS:
+If you are reading this document to resume work, understand that this is a vanilla HTML/JS/CSS single-page application. Do NOT attempt to install React, Next.js, or a backend Node server unless explicitly requested by MR. JA Sharma. Maintain the OLED dark mode aesthetic and preserve the localStorage/WhatsApp architecture.
+================================================================================
