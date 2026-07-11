@@ -76,20 +76,94 @@
     <button class="menu-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 </header>
-
-<section class="hero">
-  <span class="eyebrow">Har Mehfil, Har Zaroorat</span>
-  <h1 id="heroTitle">Loading...</h1>
-  <p class="sub" id="heroSub"></p>
-
-  <div class="search-bar">
-    <div>
-      <label>Service</label>
-      <select id="heroServiceSelect"><option value="">Koi bhi service</option></select>
+<div style="min-height:70vh; padding-top:80px;">
+<!-- Admin Dashboard -->
+<div class="wrap" style="display:block; position:static;" id="adminOverlay">
+  <div class="admin-top">
+    <div class="logo" style="font-size:1.3rem;">RIVAAZ <span style="color:var(--gold-bright); font-size:0.8rem; letter-spacing:0.1em;">ADMIN</span></div>
+    <div class="admin-tabs">
+      <button class="admin-tab active" data-target="tabCategories">Categories</button>
+      <button class="admin-tab" data-target="tabPros">Professionals</button>
+      <button class="admin-tab" data-target="tabTesti">Testimonials</button>
+      <button class="admin-tab" data-target="tabHero">Settings</button>
+      <button class="admin-tab" data-target="tabBookings">Bookings</button>
+      <button class="admin-tab" data-target="tabVendors">Staff Inquiries</button>
     </div>
-    <div>
-      <label>City</label>
-      <select id="heroCity">
+    <a href="index.html" class="btn btn-ghost" style="background:transparent; border:1px solid var(--line); text-decoration:none;">Site Par Wapas</a>
+  </div>
+  <div class="admin-body">
+    <div class="admin-section active" id="tabCategories">
+      <button class="btn add-new-btn" onclick="addOrEditCategoryForm()">+ Nayi Category</button>
+      <div id="adminCatList"></div>
+    </div>
+    <div class="admin-section" id="tabPros">
+      <button class="btn add-new-btn" onclick="addOrEditProForm()">+ Naya Professional</button>
+      <div id="adminProList"></div>
+    </div>
+    <div class="admin-section" id="tabTesti">
+      <button class="btn add-new-btn" onclick="addOrEditTestiForm()">+ Naya Testimonial</button>
+      <div id="adminTestiList"></div>
+    </div>
+    <div class="admin-section" id="tabHero">
+      <div id="heroForm" style="max-width:480px;">
+        <div class="field"><label>WhatsApp Number (jahan booking/vendor requests aayengi)</label><input type="text" id="adminWhatsapp" placeholder="91XXXXXXXXXX"></div>
+        <p style="color:var(--ivory-dim); font-size:0.78rem; margin:-10px 0 20px;">Country code ke saath, bina + ya space ke. Jaise Jaipur ka number: 91XXXXXXXXXX</p>
+        <div class="field"><label>Main Heading</label><input type="text" id="adminHeroTitle"></div>
+        <div class="field"><label>Highlighted Word (gold mein dikhega)</label><input type="text" id="adminHeroHighlight"></div>
+        <div class="field"><label>Subtitle</label><textarea id="adminHeroSub"></textarea></div>
+        <button type="button" class="btn" id="heroSubmitBtn">Save Karein</button>
+      </div>
+    </div>
+    <div class="admin-section" id="tabBookings">
+      <div id="adminBookingsList"></div>
+    </div>
+    <div class="admin-section" id="tabVendors">
+      <div id="adminVendorsList"></div>
+    </div>
+  </div>
+</div>
+
+
+  
+
+<!-- Modals for Admin -->
+<!-- PIN Modal -->
+<div class="modal-overlay" id="pinModal">
+  <div class="modal-box" style="max-width:340px;">
+    <button class="modal-close" onclick="closeModal('pinModal')">&times;</button>
+    <h3>Admin Login</h3>
+    <p class="modal-sub">Edit karne ke liye PIN daalein.</p>
+    <div id="pinForm">
+      <div class="field"><input type="password" id="pinInput" placeholder="PIN" required></div>
+      <p id="pinError">Galat PIN, dobara try karein.</p>
+      <button type="button" class="btn btn-block" id="pinSubmitBtn">Login</button>
+    </div>
+  </div>
+</div>
+
+<!-- Category Add/Edit Modal -->
+<div class="modal-overlay" id="categoryModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('categoryModal')">&times;</button>
+    <h3 id="catFormTitle">Nayi Category</h3>
+    <div id="categoryForm">
+      <div class="field"><label>Naam</label><input type="text" id="catFormName" required></div>
+      <div class="field"><label>Rate (jaise ₹250/hr)</label><input type="text" id="catFormRate" required></div>
+      <div class="form-actions"><button type="button" class="btn btn-block" id="categorySubmitBtn">Save Karein</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- Professional Add/Edit Modal -->
+<div class="modal-overlay" id="proModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('proModal')">&times;</button>
+    <h3 id="proFormTitle">Naya Professional</h3>
+    <div id="proForm">
+      <div class="field"><label>Naam</label><input type="text" id="proFormName" required></div>
+      <div class="field"><label>Role (Service)</label><input type="text" id="proFormRole" required></div>
+      <div class="field"><label>Phone Number</label><input type="text" id="proFormPhone" placeholder="919876543210" required></div>
+      <div class="field"><label>City</label><select id="proFormCity" required>
               <option value="Laxmangarh">Laxmangarh</option>
               <option value="Sikar">Sikar</option>
               <option value="Salasar">Salasar</option>
@@ -100,62 +174,30 @@
               <option value="Nechhwa">Nechhwa</option>
               <option value="Ramgarh Shekhawati">Ramgarh Shekhawati</option>
               <option value="Sujangarh">Sujangarh</option>
-      </select>
-    </div>
-    <div style="position:relative;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-        <label style="margin-bottom:0;">Event Date</label>
-        <label style="display:flex; align-items:center; gap:4px; cursor:pointer; color:var(--gold-bright); font-weight:700; text-transform:none; letter-spacing:0; font-size:0.66rem;">
-          <input type="checkbox" id="heroUrgent" style="width:12px; height:12px; accent-color:#e66; cursor:pointer;"> 
-          Urgent?
-        </label>
-      </div>
-      <input type="date" id="heroDate" style="color:var(--ivory); cursor:pointer;">
-    </div>
-    <button class="search-btn" id="heroSearchBtn">Search</button>
-  </div>
-
-  <div class="stat-row">
-    <div><b id="statCount">13+</b> categories</div>
-    <div><b>50+</b> verified professionals</div>
-    <div><b>Laxmangarh</b> & nearby</div>
-    <div><b>4.8★</b> average rating</div>
-  </div>
-</section>
-
-<section id="categories" class="reveal">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">Categories</span>
-      <h2>Ek hi jagah, poori mehfil ka intezaam</h2>
-      <p>Har role ke liye verified aur experienced professionals — hourly, shift ya full-event basis par.</p>
-    </div>
-    <div class="cat-grid reveal-stagger" id="catGrid"></div>
-  </div>
-</section>
-
-
-
-
-
-<section class="reveal" style="background:var(--ink-soft); position:relative; overflow:hidden; padding:140px 0; border:none;">
-  <div class="wrap">
-    <div class="sec-head"><span class="eyebrow">Log Kya Kehte Hain</span><h2>Real events, real trust</h2></div>
-    <div class="testi-grid reveal-stagger" id="testiGrid"></div>
-  </div>
-</section>
-
-<section id="vendors" class="reveal">
-  <div class="wrap">
-    <div class="vendor-cta">
-      <span class="eyebrow" style="color:var(--gold-bright);">For Professionals</span>
-      <h2>Kya aap waiter, chef, dancer ya security professional hain?</h2>
-      <p>Rivaaz par apna naam register karein aur apne shehar ke events se part-time ya hourly kaam paayein.</p>
-      <a href="join.html" class="btn pulse">Professional Ke Roop Mein Judein</a>
+        </select></div>
+      <div class="field"><label>Rating (jaise 4.8)</label><input type="text" id="proFormRating" required></div>
+      <div class="field"><label>Rate (jaise ₹300/hr)</label><input type="text" id="proFormRate" required></div>
+      <div class="form-actions"><button type="button" class="btn btn-block" id="proSubmitBtn">Save Karein</button></div>
     </div>
   </div>
-</section>
+</div>
 
+<!-- Testimonial Add/Edit Modal -->
+<div class="modal-overlay" id="testiModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('testiModal')">&times;</button>
+    <h3 id="testiFormTitle">Naya Testimonial</h3>
+    <div id="testiForm">
+      <div class="field"><label>Quote</label><textarea id="testiFormQuote" required></textarea></div>
+      <div class="field"><label>Naam</label><input type="text" id="testiFormWho" required></div>
+      <div class="field"><label>Event / Shehar</label><input type="text" id="testiFormWhere" required></div>
+      <div class="form-actions"><button type="button" class="btn btn-block" id="testiSubmitBtn">Save Karein</button></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
 <footer>
   <div class="wrap">
     <div class="foot-grid">
@@ -183,15 +225,11 @@
     <div class="foot-bottom">Rivaaz by <b>AK group</b> &middot; &copy; 2026 &middot; Live at <b>rivaaz.work.gd</b><br><span style="font-size:0.7rem; opacity:0.6; display:block; margin-top:8px;">Developed by MR. JA Sharma (Janmejay Ansh Sharma)</span></div>
   </div>
 </footer>
-<!-- Floating WhatsApp Support Button -->
 <a href="https://wa.me/916376213281?text=Hi%20Rivaaz%20team,%20mujhe%20kuch%20help%20chahiye!" target="_blank" rel="noopener" class="float-wa pulse" title="Chat on WhatsApp">
   <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
   </svg>
 </a>
-<div class="toast" id="toast"></div>
-
 <script src="js/app.js"></script>
 </body>
 </html>
-
