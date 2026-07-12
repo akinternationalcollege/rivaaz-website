@@ -10,9 +10,9 @@ const DEFAULT_DATA = {
   hero: { title:'Book the people who make every celebration', highlight:'unforgettable.', sub:'Waiter se dancer tak, mehndi se security tak — apni shaadi, party ya event ke liye verified professionals ghanto ya din ke hisaab se, turant book karein.' },
   
   venues: [
-    {id:'v1', name:'The Royal Palace Ground', location:'Sikar Road, Laxmangarh', attractions:'Poolside, 500-person capacity, Grand Banquet, Valet Parking', price:'Starting at ₹50,000 / day', pic:'https://dummyimage.com/600x400/1a1a1a/d4af37&text=Venue'},
-    {id:'v2', name:'Grand Heritage Hotel', location:'Station Road, Sikar', attractions:'AC Halls, 300-person capacity, In-house Catering, Premium Suites', price:'Starting at ₹35,000 / day', pic:'https://dummyimage.com/600x400/1a1a1a/d4af37&text=Venue'},
-    {id:'v3', name:'The Oasis Resort', location:'Highway 11, Fatehpur', attractions:'Lush Green Lawns, 1000+ person capacity, Open-air Stage, Kids Area', price:'Starting at ₹75,000 / day', pic:'https://dummyimage.com/600x400/1a1a1a/d4af37&text=Venue'}
+    {id:'v1', name:'The Royal Palace Ground', location:'Sikar Road, Laxmangarh', attractions:'Poolside, 500-person capacity, Grand Banquet, Valet Parking', price:'Starting at ₹50,000 / day', pics:['https://dummyimage.com/600x400/1a1a1a/d4af37&text=Venue']},
+    {id:'v2', name:'Grand Heritage Hotel', location:'Station Road, Sikar', attractions:'AC Halls, 300-person capacity, In-house Catering, Premium Suites', price:'Starting at ₹35,000 / day', pics:['https://dummyimage.com/600x400/1a1a1a/d4af37&text=Venue']},
+    {id:'v3', name:'The Oasis Resort', location:'Highway 11, Fatehpur', attractions:'Lush Green Lawns, 1000+ person capacity, Open-air Stage, Kids Area', price:'Starting at ₹75,000 / day', pics:['https://dummyimage.com/600x400/1a1a1a/d4af37&text=Venue']}
   ],
   categories: [
     {id:'c1', name:'Waiter', rate:'₹250/hr', icon:'M4 21h16M6 21V9l6-6 6 6v12M9 21v-6h6v6'},
@@ -178,9 +178,24 @@ async function saveLeads(){
 function renderVenues() {
   const vList = document.getElementById('venueGrid');
   if (!vList) return;
-  vList.innerHTML = siteData.venues.map(v => `
-    <div style="background: var(--ink-soft); border: 1px solid rgba(212, 175, 55, 0.1); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column;">
-      <img src="${v.pic}" alt="Venue" style="width: 100%; height: 250px; object-fit: cover;">
+  vList.innerHTML = siteData.venues.map(v => {
+    let imagesHtml = '';
+    if (v.pics && v.pics.length > 0) {
+      imagesHtml = `
+        <div style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; gap: 4px; height: 250px; background: #111;">
+          ${v.pics.map(pic => `
+            <img src="${pic}" alt="Venue" style="flex: 0 0 100%; width: 100%; height: 100%; object-fit: cover; scroll-snap-align: start;">
+          `).join('')}
+        </div>
+        ${v.pics.length > 1 ? `<div style="position:absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.6); color: #fff; padding: 4px 8px; border-radius: 12px; font-size: 0.8rem; backdrop-filter: blur(4px);">1 / ${v.pics.length} 📸</div>` : ''}
+      `;
+    } else if (v.pic) { // fallback for legacy data
+      imagesHtml = `<img src="${v.pic}" alt="Venue" style="width: 100%; height: 250px; object-fit: cover;">`;
+    }
+
+    return `
+    <div style="background: var(--ink-soft); border: 1px solid rgba(212, 175, 55, 0.1); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; position: relative;">
+      ${imagesHtml}
       <div style="padding: 24px; display: flex; flex-direction: column; flex-grow: 1;">
         <h3 style="margin-bottom: 8px; color: var(--gold); font-size: 1.5rem;">${v.name}</h3>
         <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-bottom: 16px; display: flex; align-items: center; gap: 6px;">
@@ -196,7 +211,20 @@ function renderVenues() {
         <a href="book.html" class="btn" style="margin-top: auto; text-align: center;">Inquire Now</a>
       </div>
     </div>
-  `).join('');
+  `}).join('');
+
+  // Add scroll event listener to update the image counter
+  document.querySelectorAll('#venueGrid > div').forEach(card => {
+    const scrollContainer = card.querySelector('div[style*="overflow-x: auto"]');
+    const counter = card.querySelector('div[style*="top: 12px"]');
+    if(scrollContainer && counter) {
+      scrollContainer.addEventListener('scroll', () => {
+        const index = Math.round(scrollContainer.scrollLeft / scrollContainer.clientWidth) + 1;
+        const total = scrollContainer.querySelectorAll('img').length;
+        counter.innerHTML = `${index} / ${total} 📸`;
+      });
+    }
+  });
 }
 
 function renderAll(){
@@ -536,7 +564,7 @@ window.addOrEditVenueForm = function(id = null) {
     document.getElementById('venueFormLoc').value = v.location;
     document.getElementById('venueFormAttr').value = v.attractions;
     document.getElementById('venueFormPrice').value = v.price;
-    document.getElementById('venueFormPic').value = v.pic;
+    document.getElementById('venueFormPic').value = v.pics ? v.pics.join('\n') : (v.pic ? v.pic : '');
   } else {
     document.getElementById('venueFormTitle').textContent = 'Naya Venue';
     document.getElementById('venueFormName').value = '';
@@ -553,24 +581,27 @@ document.getElementById('venueSubmitBtn')?.addEventListener('click', () => {
   const location = document.getElementById('venueFormLoc').value.trim();
   const attractions = document.getElementById('venueFormAttr').value.trim();
   const price = document.getElementById('venueFormPrice').value.trim();
-  const pic = document.getElementById('venueFormPic').value.trim() || 'https://dummyimage.com/600x400/1a1a1a/d4af37&text=Venue';
-  
+  const picRaw = document.getElementById('venueFormPic').value;
+
+  let pics = picRaw.split('\n').map(l => l.trim()).filter(l => l !== '').slice(0, 20);
+  if (pics.length === 0) pics = ['https://dummyimage.com/600x400/1a1a1a/d4af37&text=Venue'];
+
   if(!name || !location || !price) {
     alert('Naam, Location, aur Price zaroori hain!');
     return;
   }
-  
+
   if(editingVenueId) {
     const idx = siteData.venues.findIndex(x => x.id === editingVenueId);
     if(idx > -1) {
-      siteData.venues[idx] = { id: editingVenueId, name, location, attractions, price, pic };
+      siteData.venues[idx] = { id: editingVenueId, name, location, attractions, price, pics };
     }
   } else {
-    siteData.venues.push({ id: 'v' + Date.now(), name, location, attractions, price, pic });
+    siteData.venues.push({ id: 'v' + Date.now(), name, location, attractions, price, pics });
   }
-  
-  saveSite(); 
-  renderAdminVenues(); 
+
+  saveSite();
+  renderAdminVenues();
   if(typeof renderVenues === 'function') renderVenues();
   closeModal('venueModal');
   showToast('Saved!');
