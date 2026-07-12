@@ -63,7 +63,7 @@ let localStr = localStorage.getItem(STORAGE_KEY);
 if (localStr) {
   try {
     let parsed = JSON.parse(localStr);
-    if (!parsed.venues) {
+    if (!parsed.venues || parsed.venues.length === 0) {
         parsed.venues = DEFAULT_DATA.venues;
         localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
         siteData.venues = DEFAULT_DATA.venues;
@@ -134,11 +134,13 @@ async function loadAll(){
       // Force seeded professionals if storage has fewer than 18
       if (!loadedData.professionals || loadedData.professionals.length < 18) {
         loadedData.professionals = DEFAULT_DATA.professionals;
-        siteData = loadedData;
-        saveSite();
-      } else {
-        siteData = loadedData;
       }
+      // Force seeded venues if missing or empty
+      if (!loadedData.venues || loadedData.venues.length === 0) {
+        loadedData.venues = DEFAULT_DATA.venues;
+      }
+      siteData = loadedData;
+      saveSite();
       renderAll();
       renderAdminPros();
     }
