@@ -228,7 +228,7 @@ function renderVenues() {
 }
 
 function renderAll(){
-  renderVenues(); renderHero(); renderCategories(); renderProfessionals(); renderTestimonials(); }
+  renderHero(); renderCategories(); renderProfessionals(); renderTestimonials(); renderVenues(); }
 
 function renderHero(){
   if(!document.getElementById('heroTitle')) return;
