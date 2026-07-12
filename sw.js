@@ -1,7 +1,9 @@
-const CACHE_NAME = 'rivaaz-v2';
+const CACHE_NAME = 'rivaaz-v3-multipage';
 const urlsToCache = [
   '/',
   '/index.html',
+  '/css/global.css',
+  '/js/app.js',
   '/manifest.json'
 ];
 
@@ -28,18 +30,20 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  if (event.request.mode === 'navigate') {
-    event.respondWith(
-      fetch(event.request).catch(() => {
-        return caches.match('/index.html');
+  event.respondWith(
+    fetch(event.request)
+      .then(response => {
+        // Clone the response and save it to the cache dynamically so new pages get cached
+        if (event.request.method === 'GET') {
+          const resClone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, resClone));
+        }
+        return response;
       })
-    );
-  } else {
-    event.respondWith(
-      caches.match(event.request)
-        .then(response => {
-          return response || fetch(event.request);
-        })
-    );
-  }
+      .catch(() => {
+        return caches.match(event.request).then(cachedRes => {
+          return cachedRes || caches.match('/index.html');
+        });
+      })
+  );
 });
