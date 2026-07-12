@@ -51,6 +51,22 @@ const DEFAULT_DATA = {
 };
 
 let siteData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+
+// Forcefully patch localStorage synchronously to prevent race conditions on initial page load
+let localStr = localStorage.getItem(STORAGE_KEY);
+if (localStr) {
+  try {
+    let parsed = JSON.parse(localStr);
+    if (!parsed.professionals || parsed.professionals.length < 18) {
+      parsed.professionals = DEFAULT_DATA.professionals;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+      siteData.professionals = DEFAULT_DATA.professionals; // Sync local object immediately
+    }
+  } catch(e) {}
+} else {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_DATA));
+}
+
 let leads = [];
 let editing = { type:null, id:null };
 let storageBroken = false;
@@ -103,11 +119,14 @@ async function loadAll(){
   try{
     const res = await withRetry(()=>window.storage.get(STORAGE_KEY, true));
     if(res && res.value){
-      siteData = JSON.parse(res.value);
+      let loadedData = JSON.parse(res.value);
       // Force seeded professionals if storage has fewer than 18
-      if (!siteData.professionals || siteData.professionals.length < 18) {
-        siteData.professionals = DEFAULT_DATA.professionals;
+      if (!loadedData.professionals || loadedData.professionals.length < 18) {
+        loadedData.professionals = DEFAULT_DATA.professionals;
+        siteData = loadedData;
         saveSite();
+      } else {
+        siteData = loadedData;
       }
       renderAll();
     }
