@@ -129,6 +129,7 @@ async function loadAll(){
         siteData = loadedData;
       }
       renderAll();
+      renderAdminPros();
     }
   }catch(e){
     saveSite(); // first-ever run: seed storage with defaults for next time
@@ -137,7 +138,7 @@ async function loadAll(){
   try{
     const res2 = await withRetry(()=>window.storage.get(LEADS_KEY, true));
     if(res2 && res2.value){ leads = JSON.parse(res2.value); }
-  }catch(e){ 
+  }catch(e){
     // Fallback to standard localStorage
     try {
       const backup = localStorage.getItem(LEADS_KEY);
@@ -243,9 +244,21 @@ function openBooking(serviceName, proName){
 }
 const heroSearchBtn = document.getElementById('heroSearchBtn');
 if(heroSearchBtn) heroSearchBtn.addEventListener('click', ()=>{
-  openBooking(document.getElementById('heroServiceSelect').value);
-  document.getElementById('bkCity').value = document.getElementById('heroCity').value;
-  document.getElementById('bkDate').value = document.getElementById('heroDate').value;
+  const service = document.getElementById('heroServiceSelect').value;
+  const city = document.getElementById('heroCity').value;
+  const date = document.getElementById('heroDate').value;
+
+  if(document.getElementById('bookingFormWrap')) {
+    openBooking(service);
+    if(document.getElementById('bkCity')) document.getElementById('bkCity').value = city;
+    if(document.getElementById('bkDate')) document.getElementById('bkDate').value = date;
+  } else {
+    let url = 'book.html?';
+    if(service) url += 'service=' + encodeURIComponent(service);
+    if(city) url += (url.endsWith('?') ? '' : '&') + 'city=' + encodeURIComponent(city);
+    if(date) url += (url.endsWith('?') ? '' : '&') + 'date=' + encodeURIComponent(date);
+    window.location.href = url;
+  }
 });
 function resetFields(ids){ ids.forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; }); }
 function enableEnterSubmit(containerId, buttonId){
@@ -368,11 +381,19 @@ if(vendorSubmitBtnEl) vendorSubmitBtnEl.addEventListener('click', async()=>{
     // Automatically redirect to WhatsApp
     window.open(waLink, '_blank');
 
-    waBtn.href = waLink; waBtn.style.display='block';
-    document.getElementById('vendorSuccessMsg').textContent = 'Aapko WhatsApp par redirect kiya ja raha hai... Agar nahi hua to neeche button dabayein.';
+    const waBtn = document.getElementById('vendorWaBtn');
+    if(waBtn) {
+      waBtn.href = waLink; waBtn.style.display='block';
+    }
+    if(document.getElementById('vendorSuccessMsg')) {
+      document.getElementById('vendorSuccessMsg').textContent = 'Aapko WhatsApp par redirect kiya ja raha hai... Agar nahi hua to neeche button dabayein.';
+    }
   } else {
-    waBtn.style.display='none';
-    document.getElementById('vendorSuccessMsg').textContent = 'Team jaldi contact karegi.';
+    const waBtn = document.getElementById('vendorWaBtn');
+    if(waBtn) waBtn.style.display='none';
+    if(document.getElementById('vendorSuccessMsg')) {
+      document.getElementById('vendorSuccessMsg').textContent = 'Team jaldi contact karegi.';
+    }
   }
 });
 enableEnterSubmit('vendorModal','vendorSubmitBtn');
@@ -397,15 +418,26 @@ if(pinSubmitBtnEl) pinSubmitBtnEl.addEventListener('click', ()=>{
 });
 enableEnterSubmit('pinModal','pinSubmitBtn');
 function openAdmin(){
-  openModal('adminOverlay');
-  document.getElementById('adminOverlay').classList.add('show');
+  const adminOverlay = document.getElementById('adminOverlay');
+  if(adminOverlay) {
+    adminOverlay.style.display = 'block';
+  }
   renderAdminCategories(); renderAdminPros(); renderAdminTesti(); renderAdminBookings(); renderAdminVendors();
-  document.getElementById('adminWhatsapp').value=siteData.whatsappNumber||'';
-  document.getElementById('adminHeroTitle').value=siteData.hero.title;
-  document.getElementById('adminHeroHighlight').value=siteData.hero.highlight;
-  document.getElementById('adminHeroSub').value=siteData.hero.sub;
+  if(document.getElementById('adminWhatsapp')){
+    document.getElementById('adminWhatsapp').value=siteData.whatsappNumber||'';
+    document.getElementById('adminHeroTitle').value=siteData.hero.title;
+    document.getElementById('adminHeroHighlight').value=siteData.hero.highlight;
+    document.getElementById('adminHeroSub').value=siteData.hero.sub;
+  }
 }
-function closeAdmin(){ document.getElementById('adminOverlay').classList.remove('show'); }
+function closeAdmin(){
+  const adminOverlay = document.getElementById('adminOverlay');
+  if(adminOverlay) adminOverlay.style.display = 'none';
+}
+
+if(window.location.pathname.includes('admin.html')) {
+  openModal('pinModal');
+}
 document.querySelectorAll('.admin-tab').forEach(tab=>{
   tab.addEventListener('click', ()=>{
     document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
@@ -581,12 +613,15 @@ function deleteLead(id){
   saveLeads(); renderAdminBookings(); renderAdminVendors();
 }
 
-document.querySelector('.menu-toggle').addEventListener('click', ()=>{
-  const navEl=document.querySelector('.nav-links');
-  const isOpen = navEl.style.display==='flex';
-  navEl.style.display = isOpen ? 'none' : 'flex';
-  navEl.style.cssText += 'flex-direction:column; position:absolute; top:64px; right:20px; background:#1F1811; padding:20px 30px; border:1px solid rgba(201,162,75,0.28); gap:18px;';
-});
+const menuToggle = document.querySelector('.menu-toggle');
+if (menuToggle) {
+  menuToggle.addEventListener('click', ()=>{
+    const navEl=document.querySelector('.nav-links');
+    const isOpen = navEl.style.display==='flex';
+    navEl.style.display = isOpen ? 'none' : 'flex';
+    navEl.style.cssText += 'flex-direction:column; position:absolute; top:64px; right:20px; background:#1F1811; padding:20px 30px; border:1px solid rgba(201,162,75,0.28); gap:18px;';
+  });
+}
 
 loadAll();
 
@@ -611,19 +646,17 @@ function setupSmartCalendars() {
   const bkDate = document.getElementById('bkDate');
   const bkUrgent = document.getElementById('bkUrgent');
 
-  if (!heroDate || !bkDate) return;
-
   function setCalendarLimits() {
     const today = new Date();
-    
+
     // Calculate +3 days (Standard minimum booking)
     const minStandard = new Date(today);
     minStandard.setDate(today.getDate() + 3);
-    
+
     // Calculate +3 years (Maximum booking)
     const maxDate = new Date(today);
     maxDate.setFullYear(today.getFullYear() + 3);
-    
+
     // Format dates to YYYY-MM-DD for the HTML input
     const formatStr = (d) => d.toISOString().split('T')[0];
     const todayStr = formatStr(today);
@@ -631,31 +664,34 @@ function setupSmartCalendars() {
     const maxStr = formatStr(maxDate);
 
     // Apply logic to Hero Search Bar
-    if (heroUrgent.checked) {
-      heroDate.min = todayStr; // Can book today or tomorrow
-    } else {
-      heroDate.min = minStandardStr; // Must book 3+ days in advance
-      // If they had an urgent date selected but unchecked the box, clear it
-      if (heroDate.value && heroDate.value < minStandardStr) heroDate.value = '';
+    if (heroDate && heroUrgent) {
+      if (heroUrgent.checked) {
+        heroDate.min = todayStr; // Can book today or tomorrow
+      } else {
+        heroDate.min = minStandardStr; // Must book 3+ days in advance
+        if (heroDate.value && heroDate.value < minStandardStr) heroDate.value = '';
+      }
+      heroDate.max = maxStr;
     }
-    heroDate.max = maxStr;
 
     // Apply logic to Booking Modal
-    if (bkUrgent.checked) {
-      bkDate.min = todayStr;
-    } else {
-      bkDate.min = minStandardStr;
-      if (bkDate.value && bkDate.value < minStandardStr) bkDate.value = '';
+    if (bkDate && bkUrgent) {
+      if (bkUrgent.checked) {
+        bkDate.min = todayStr;
+      } else {
+        bkDate.min = minStandardStr;
+        if (bkDate.value && bkDate.value < minStandardStr) bkDate.value = '';
+      }
+      bkDate.max = maxStr;
     }
-    bkDate.max = maxStr;
   }
 
   // Run on load
   setCalendarLimits();
 
   // Run whenever the Urgent checkboxes are clicked
-  heroUrgent.addEventListener('change', setCalendarLimits);
-  bkUrgent.addEventListener('change', setCalendarLimits);
+  if (heroUrgent) heroUrgent.addEventListener('change', setCalendarLimits);
+  if (bkUrgent) bkUrgent.addEventListener('change', setCalendarLimits);
 }
 
 document.addEventListener('DOMContentLoaded', setupSmartCalendars);
@@ -677,7 +713,11 @@ window.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
     const service = params.get('service');
     const pro = params.get('pro');
+    const city = params.get('city');
+    const date = params.get('date');
     if(service && document.getElementById('bkService')) document.getElementById('bkService').value = service;
     if(pro && document.getElementById('bkNotes')) document.getElementById('bkNotes').value = 'Preferred professional: ' + pro;
+    if(city && document.getElementById('bkCity')) document.getElementById('bkCity').value = city;
+    if(date && document.getElementById('bkDate')) document.getElementById('bkDate').value = date;
   }
 });
