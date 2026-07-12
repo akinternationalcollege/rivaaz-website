@@ -417,9 +417,6 @@ if(pinSubmitBtnEl) pinSubmitBtnEl.addEventListener('click', ()=>{
   if(val===ADMIN_PIN){
     closeModal('pinModal');
     document.getElementById('pinError').style.display='none';
-    if(document.getElementById('adminOverlay')) document.getElementById('adminOverlay').style.display = 'block';
-    renderAdminCategories();
-    renderAdminPros();
     openAdmin();
   }
   else{ document.getElementById('pinError').style.display='block'; }
@@ -443,10 +440,12 @@ function closeAdmin(){
   if(adminOverlay) adminOverlay.style.display = 'none';
 }
 
-if(window.location.pathname.includes('admin.html')) {
-  if (document.getElementById('adminOverlay')) document.getElementById('adminOverlay').style.display = 'none';
-  openModal('pinModal');
-}
+document.addEventListener('DOMContentLoaded', () => {
+  if (window.location.pathname.includes('admin.html') || window.location.pathname.includes('admin')) {
+      if (document.getElementById('adminOverlay')) document.getElementById('adminOverlay').style.display = 'none';
+      openModal('pinModal');
+  }
+});
 document.querySelectorAll('.admin-tab').forEach(tab=>{
   tab.addEventListener('click', ()=>{
     document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
