@@ -59,7 +59,10 @@ const DEFAULT_DATA = {
 let siteData = JSON.parse(JSON.stringify(DEFAULT_DATA));
 
 // Forcefully patch localStorage synchronously to prevent race conditions on initial page load
-let localStr = localStorage.getItem(STORAGE_KEY);
+let localStr = null;
+try {
+  localStr = localStorage.getItem(STORAGE_KEY);
+} catch(e) {}
 if (localStr) {
   try {
     let parsed = JSON.parse(localStr);
@@ -73,12 +76,12 @@ if (localStr) {
       changed = true;
     }
     if (changed) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed)); } catch(e) {}
       siteData = parsed;
     }
   } catch(e) {}
 } else {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_DATA));
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_DATA)); } catch(e) {}
 }
 
 let leads = [];
