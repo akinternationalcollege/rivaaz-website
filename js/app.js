@@ -270,6 +270,7 @@ function enableEnterSubmit(containerId, buttonId){
 
 const bookingSubmitBtnEl = document.getElementById('bookingSubmitBtn');
 if(bookingSubmitBtnEl) bookingSubmitBtnEl.addEventListener('click', async()=>{
+  if(!document.getElementById('bkName')) return;
   const name=document.getElementById('bkName').value.trim();
   const phone=document.getElementById('bkPhone').value.trim();
   const city=document.getElementById('bkCity').value.trim();
@@ -413,7 +414,14 @@ const pinSubmitBtnEl = document.getElementById('pinSubmitBtn');
 if(pinSubmitBtnEl) pinSubmitBtnEl.addEventListener('click', ()=>{
   const val=document.getElementById('pinInput').value;
   document.getElementById('pinInput').value='';
-  if(val===ADMIN_PIN){ closeModal('pinModal'); document.getElementById('pinError').style.display='none'; openAdmin(); }
+  if(val===ADMIN_PIN){
+    closeModal('pinModal');
+    document.getElementById('pinError').style.display='none';
+    if(document.getElementById('adminOverlay')) document.getElementById('adminOverlay').style.display = 'block';
+    renderAdminCategories();
+    renderAdminPros();
+    openAdmin();
+  }
   else{ document.getElementById('pinError').style.display='block'; }
 });
 enableEnterSubmit('pinModal','pinSubmitBtn');
@@ -436,6 +444,7 @@ function closeAdmin(){
 }
 
 if(window.location.pathname.includes('admin.html')) {
+  if (document.getElementById('adminOverlay')) document.getElementById('adminOverlay').style.display = 'none';
   openModal('pinModal');
 }
 document.querySelectorAll('.admin-tab').forEach(tab=>{
@@ -585,6 +594,7 @@ if(heroSubmitBtnEl) heroSubmitBtnEl.addEventListener('click', async()=>{
 
 /* Admin: Leads */
 function renderAdminBookings(){
+  if(!document.getElementById('adminBookingsList')) return;
   const el=document.getElementById('adminBookingsList'); el.innerHTML='';
   const bLeads = leads.filter(l=>l.type==='booking');
   if(bLeads.length===0){ el.innerHTML='<div class="empty-state">Abhi tak koi booking request nahi aayi.</div>'; return; }
@@ -597,6 +607,7 @@ function renderAdminBookings(){
   });
 }
 function renderAdminVendors(){
+  if(!document.getElementById('adminVendorsList')) return;
   const el=document.getElementById('adminVendorsList'); el.innerHTML='';
   const vLeads = leads.filter(l=>l.type==='vendor');
   if(vLeads.length===0){ el.innerHTML='<div class="empty-state">Abhi tak koi staff inquiry nahi aayi.</div>'; return; }
