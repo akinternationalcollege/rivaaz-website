@@ -67,6 +67,7 @@ if (localStr) {
   try {
     let parsed = JSON.parse(localStr);
     let changed = false;
+    
     if (!parsed.venues || parsed.venues.length === 0) {
         parsed.venues = DEFAULT_DATA.venues;
         changed = true;
@@ -75,10 +76,27 @@ if (localStr) {
       parsed.professionals = DEFAULT_DATA.professionals;
       changed = true;
     }
+    if (!parsed.categories || parsed.categories.length === 0) {
+      parsed.categories = DEFAULT_DATA.categories;
+      changed = true;
+    }
+    if (!parsed.testimonials || parsed.testimonials.length === 0) {
+      parsed.testimonials = DEFAULT_DATA.testimonials;
+      changed = true;
+    }
+    if (!parsed.hero || !parsed.hero.title) {
+      parsed.hero = DEFAULT_DATA.hero;
+      changed = true;
+    }
+    if (!parsed.whatsappNumber) {
+      parsed.whatsappNumber = DEFAULT_DATA.whatsappNumber;
+      changed = true;
+    }
+    
     if (changed) {
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed)); } catch(e) {}
-      siteData = parsed;
     }
+    siteData = parsed;
   } catch(e) {}
 } else {
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_DATA)); } catch(e) {}
@@ -137,13 +155,23 @@ async function loadAll(){
     const res = await withRetry(()=>window.storage.get(STORAGE_KEY, true));
     if(res && res.value){
       let loadedData = JSON.parse(res.value);
-      // Force seeded professionals if storage has fewer than 18
       if (!loadedData.professionals || loadedData.professionals.length < 18) {
         loadedData.professionals = DEFAULT_DATA.professionals;
       }
-      // Force seeded venues if missing or empty
       if (!loadedData.venues || loadedData.venues.length === 0) {
         loadedData.venues = DEFAULT_DATA.venues;
+      }
+      if (!loadedData.categories || loadedData.categories.length === 0) {
+        loadedData.categories = DEFAULT_DATA.categories;
+      }
+      if (!loadedData.testimonials || loadedData.testimonials.length === 0) {
+        loadedData.testimonials = DEFAULT_DATA.testimonials;
+      }
+      if (!loadedData.hero || !loadedData.hero.title) {
+        loadedData.hero = DEFAULT_DATA.hero;
+      }
+      if (!loadedData.whatsappNumber) {
+        loadedData.whatsappNumber = DEFAULT_DATA.whatsappNumber;
       }
       siteData = loadedData;
       saveSite();
