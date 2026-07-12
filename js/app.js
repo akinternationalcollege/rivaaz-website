@@ -532,6 +532,7 @@ document.querySelectorAll('.admin-tab').forEach(tab=>{
 // Admin Venue Logic
 // -----------------------------------------------------
 let editingVenueId = null;
+let uploadedVenueBase64Pics = [];
 
 function renderAdminVenues() {
   const vList = document.getElementById('adminVenueList');
@@ -557,6 +558,12 @@ function renderAdminVenues() {
 
 window.addOrEditVenueForm = function(id = null) {
   editingVenueId = id;
+  uploadedVenueBase64Pics = [];
+  const venueFileInput = document.getElementById('venueFileInput');
+  if (venueFileInput) venueFileInput.value = '';
+  const venueImagePreview = document.getElementById('venueImagePreview');
+  if (venueImagePreview) venueImagePreview.innerHTML = '';
+
   if(id) {
     const v = siteData.venues.find(x => x.id === id);
     document.getElementById('venueFormTitle').textContent = 'Edit Venue';
@@ -583,7 +590,8 @@ document.getElementById('venueSubmitBtn')?.addEventListener('click', () => {
   const price = document.getElementById('venueFormPrice').value.trim();
   const picRaw = document.getElementById('venueFormPic').value;
 
-  let pics = picRaw.split('\n').map(l => l.trim()).filter(l => l !== '').slice(0, 20);
+  let urlPics = picRaw.split('\n').map(l => l.trim()).filter(l => l !== '');
+  let pics = [...uploadedVenueBase64Pics, ...urlPics].slice(0, 20);
   if (pics.length === 0) pics = ['https://dummyimage.com/600x400/1a1a1a/d4af37&text=Venue'];
 
   if(!name || !location || !price) {
@@ -606,6 +614,35 @@ document.getElementById('venueSubmitBtn')?.addEventListener('click', () => {
   closeModal('venueModal');
   showToast('Saved!');
 });
+
+const venueFileInput = document.getElementById('venueFileInput');
+if (venueFileInput) {
+  venueFileInput.addEventListener('change', (e) => {
+    const files = e.target.files;
+    if (files.length > 20) {
+      alert('You can only upload up to 20 images at a time.');
+      return;
+    }
+    uploadedVenueBase64Pics = [];
+    const venueImagePreview = document.getElementById('venueImagePreview');
+    venueImagePreview.innerHTML = '';
+
+    Array.from(files).forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const base64Str = e.target.result;
+        uploadedVenueBase64Pics.push(base64Str);
+        const img = document.createElement('img');
+        img.src = base64Str;
+        img.style.height = '60px';
+        img.style.borderRadius = '4px';
+        img.style.objectFit = 'cover';
+        venueImagePreview.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+}
 
 window.deleteVenue = function(id) {
   if(confirm('Kudratan delete karna chahte hain?')) {
