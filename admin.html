@@ -86,6 +86,7 @@
       <button class="admin-tab active" data-target="tabCategories">Categories</button>
       <button class="admin-tab" data-target="tabPros">Professionals</button>
       <button class="admin-tab" data-target="tabTesti">Testimonials</button>
+      <button class="admin-tab" data-target="tabVenues">Venues</button>
       <button class="admin-tab" data-target="tabHero">Settings</button>
       <button class="admin-tab" data-target="tabBookings">Bookings</button>
       <button class="admin-tab" data-target="tabVendors">Staff Inquiries</button>
@@ -104,6 +105,10 @@
     <div class="admin-section" id="tabTesti">
       <button class="btn add-new-btn" onclick="addOrEditTestiForm()">+ Naya Testimonial</button>
       <div id="adminTestiList"></div>
+    </div>
+    <div class="admin-section" id="tabVenues">
+      <button class="btn add-new-btn" onclick="addOrEditVenueForm()">+ Naya Venue</button>
+      <div id="adminVenueList"></div>
     </div>
     <div class="admin-section" id="tabHero">
       <div id="heroForm" style="max-width:480px;">
@@ -181,6 +186,23 @@
       <div class="field"><label>Rating (jaise 4.8)</label><input type="text" id="proFormRating" required></div>
       <div class="field"><label>Rate (jaise ₹300/hr)</label><input type="text" id="proFormRate" required></div>
       <div class="form-actions"><button type="button" class="btn btn-block" id="proSubmitBtn">Save Karein</button></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Venue Add/Edit Modal -->
+<div class="modal-overlay" id="venueModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('venueModal')">&times;</button>
+    <h3 id="venueFormTitle">Naya Venue</h3>
+    <div id="venueForm">
+      <div class="field"><label>Naam</label><input type="text" id="venueFormName" required></div>
+      <div class="field"><label>Location</label><input type="text" id="venueFormLoc" required></div>
+      <div class="field"><label>Attractions/Highlights</label><textarea id="venueFormAttr" required></textarea></div>
+      <div class="field"><label>Price (jaise Starting at ₹50,000 / day)</label><input type="text" id="venueFormPrice" required></div>
+      <div class="field"><label>Picture URL</label><input type="text" id="venueFormPic" placeholder="https://..."></div>
+      <div class="form-actions"><button type="button" class="btn btn-block" id="venueSubmitBtn">Save Karein</button></div>
     </div>
   </div>
 </div>

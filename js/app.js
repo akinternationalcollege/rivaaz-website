@@ -8,6 +8,12 @@ const AVATAR_COLORS = ['#5C1A23','#204B3F','#8a6d1f'];
 const DEFAULT_DATA = {
   whatsappNumber: '6376213281',
   hero: { title:'Book the people who make every celebration', highlight:'unforgettable.', sub:'Waiter se dancer tak, mehndi se security tak — apni shaadi, party ya event ke liye verified professionals ghanto ya din ke hisaab se, turant book karein.' },
+  
+  venues: [
+    {id:'v1', name:'The Royal Palace Ground', location:'Sikar Road, Laxmangarh', attractions:'Poolside, 500-person capacity, Grand Banquet, Valet Parking', price:'Starting at ₹50,000 / day', pic:'https://dummyimage.com/600x400/1a1a1a/d4af37&text=Venue'},
+    {id:'v2', name:'Grand Heritage Hotel', location:'Station Road, Sikar', attractions:'AC Halls, 300-person capacity, In-house Catering, Premium Suites', price:'Starting at ₹35,000 / day', pic:'https://dummyimage.com/600x400/1a1a1a/d4af37&text=Venue'},
+    {id:'v3', name:'The Oasis Resort', location:'Highway 11, Fatehpur', attractions:'Lush Green Lawns, 1000+ person capacity, Open-air Stage, Kids Area', price:'Starting at ₹75,000 / day', pic:'https://dummyimage.com/600x400/1a1a1a/d4af37&text=Venue'}
+  ],
   categories: [
     {id:'c1', name:'Waiter', rate:'₹250/hr', icon:'M4 21h16M6 21V9l6-6 6 6v12M9 21v-6h6v6'},
     {id:'c2', name:'Reception Staff', rate:'₹300/hr', icon:'M4 4h16v16H4z M9 9h6v6H9z'},
@@ -57,7 +63,12 @@ let localStr = localStorage.getItem(STORAGE_KEY);
 if (localStr) {
   try {
     let parsed = JSON.parse(localStr);
-    if (!parsed.professionals || parsed.professionals.length < 18) {
+    if (!parsed.venues) {
+        parsed.venues = DEFAULT_DATA.venues;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+        siteData.venues = DEFAULT_DATA.venues;
+      }
+      if (!parsed.professionals || parsed.professionals.length < 18) {
       parsed.professionals = DEFAULT_DATA.professionals;
       localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
       siteData.professionals = DEFAULT_DATA.professionals; // Sync local object immediately
@@ -157,7 +168,34 @@ async function saveLeads(){
   } 
 }
 
-function renderAll(){ renderHero(); renderCategories(); renderProfessionals(); renderTestimonials(); }
+
+// Render Venues (Public)
+function renderVenues() {
+  const vList = document.getElementById('venueGrid');
+  if (!vList) return;
+  vList.innerHTML = siteData.venues.map(v => `
+    <div style="background: var(--ink-soft); border: 1px solid rgba(212, 175, 55, 0.1); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column;">
+      <img src="${v.pic}" alt="Venue" style="width: 100%; height: 250px; object-fit: cover;">
+      <div style="padding: 24px; display: flex; flex-direction: column; flex-grow: 1;">
+        <h3 style="margin-bottom: 8px; color: var(--gold); font-size: 1.5rem;">${v.name}</h3>
+        <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-bottom: 16px; display: flex; align-items: center; gap: 6px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+          ${v.location}
+        </p>
+        <div style="margin-bottom: 20px; font-size: 0.95rem;">
+          <strong style="color: #fff;">Highlights:</strong> ${v.attractions}
+        </div>
+        <div style="margin-bottom: 24px; font-weight: 600; font-size: 1.1rem; color: #fff;">
+          ${v.price}
+        </div>
+        <a href="book.html" class="btn" style="margin-top: auto; text-align: center;">Inquire Now</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderAll(){
+  renderVenues(); renderHero(); renderCategories(); renderProfessionals(); renderTestimonials(); }
 
 function renderHero(){
   if(!document.getElementById('heroTitle')) return;
@@ -427,7 +465,7 @@ function openAdmin(){
   if(adminOverlay) {
     adminOverlay.style.display = 'block';
   }
-  renderAdminCategories(); renderAdminPros(); renderAdminTesti(); renderAdminBookings(); renderAdminVendors();
+  renderAdminCategories(); renderAdminPros(); renderAdminTesti(); renderAdminVenues(); renderAdminBookings(); renderAdminVendors();
   if(document.getElementById('adminWhatsapp')){
     document.getElementById('adminWhatsapp').value=siteData.whatsappNumber||'';
     document.getElementById('adminHeroTitle').value=siteData.hero.title;
@@ -456,6 +494,92 @@ document.querySelectorAll('.admin-tab').forEach(tab=>{
 });
 
 /* Admin: Categories */
+
+// -----------------------------------------------------
+// Admin Venue Logic
+// -----------------------------------------------------
+let editingVenueId = null;
+
+function renderAdminVenues() {
+  const vList = document.getElementById('adminVenueList');
+  if(!vList) return;
+  if(!siteData.venues || siteData.venues.length === 0) {
+    vList.innerHTML = '<p style="color:#888;">Koi venue nahi hai.</p>';
+    return;
+  }
+  
+  vList.innerHTML = siteData.venues.map(v => `
+    <div class="admin-list-item">
+      <div>
+        <div style="font-weight:600;">${v.name}</div>
+        <div style="font-size:0.8rem; color:var(--ivory-dim);">${v.location} | ${v.price}</div>
+      </div>
+      <div>
+        <button class="btn" style="padding:4px 10px; font-size:0.8rem; margin-right:5px;" onclick="addOrEditVenueForm('${v.id}')">Edit</button>
+        <button class="btn btn-ghost" style="padding:4px 10px; font-size:0.8rem; color:#ff4444;" onclick="deleteVenue('${v.id}')">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+window.addOrEditVenueForm = function(id = null) {
+  editingVenueId = id;
+  if(id) {
+    const v = siteData.venues.find(x => x.id === id);
+    document.getElementById('venueFormTitle').textContent = 'Edit Venue';
+    document.getElementById('venueFormName').value = v.name;
+    document.getElementById('venueFormLoc').value = v.location;
+    document.getElementById('venueFormAttr').value = v.attractions;
+    document.getElementById('venueFormPrice').value = v.price;
+    document.getElementById('venueFormPic').value = v.pic;
+  } else {
+    document.getElementById('venueFormTitle').textContent = 'Naya Venue';
+    document.getElementById('venueFormName').value = '';
+    document.getElementById('venueFormLoc').value = '';
+    document.getElementById('venueFormAttr').value = '';
+    document.getElementById('venueFormPrice').value = '';
+    document.getElementById('venueFormPic').value = '';
+  }
+  openModal('venueModal');
+};
+
+document.getElementById('venueSubmitBtn')?.addEventListener('click', () => {
+  const name = document.getElementById('venueFormName').value.trim();
+  const location = document.getElementById('venueFormLoc').value.trim();
+  const attractions = document.getElementById('venueFormAttr').value.trim();
+  const price = document.getElementById('venueFormPrice').value.trim();
+  const pic = document.getElementById('venueFormPic').value.trim() || 'https://dummyimage.com/600x400/1a1a1a/d4af37&text=Venue';
+  
+  if(!name || !location || !price) {
+    alert('Naam, Location, aur Price zaroori hain!');
+    return;
+  }
+  
+  if(editingVenueId) {
+    const idx = siteData.venues.findIndex(x => x.id === editingVenueId);
+    if(idx > -1) {
+      siteData.venues[idx] = { id: editingVenueId, name, location, attractions, price, pic };
+    }
+  } else {
+    siteData.venues.push({ id: 'v' + Date.now(), name, location, attractions, price, pic });
+  }
+  
+  saveSite(); 
+  renderAdminVenues(); 
+  if(typeof renderVenues === 'function') renderVenues();
+  closeModal('venueModal');
+  showToast('Saved!');
+});
+
+window.deleteVenue = function(id) {
+  if(confirm('Kudratan delete karna chahte hain?')) {
+    siteData.venues = siteData.venues.filter(x => x.id !== id);
+    saveSite(); renderAdminVenues(); 
+    if(typeof renderVenues === 'function') renderVenues();
+    showToast('Deleted!');
+  }
+};
+
 function renderAdminCategories(){
   if(!document.getElementById('adminCatList')) return;
   const el=document.getElementById('adminCatList'); el.innerHTML='';

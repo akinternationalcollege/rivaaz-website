@@ -94,66 +94,7 @@
       <h2>Explore top venues in your city</h2>
     </div>
     
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; margin-top: 40px;">
-      
-      <!-- Venue 1 -->
-      <div style="background: var(--ink-soft); border: 1px solid rgba(212, 175, 55, 0.1); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column;">
-        <img src="https://dummyimage.com/600x400/1a1a1a/d4af37&text=Venue" alt="Venue" style="width: 100%; height: 250px; object-fit: cover;">
-        <div style="padding: 24px; display: flex; flex-direction: column; flex-grow: 1;">
-          <h3 style="margin-bottom: 8px; color: var(--gold); font-size: 1.5rem;">The Royal Palace Ground</h3>
-          <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-bottom: 16px; display: flex; align-items: center; gap: 6px;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-            Sikar Road, Laxmangarh
-          </p>
-          <div style="margin-bottom: 20px; font-size: 0.95rem;">
-            <strong style="color: #fff;">Highlights:</strong> Poolside, 500-person capacity, Grand Banquet, Valet Parking
-          </div>
-          <div style="margin-bottom: 24px; font-weight: 600; font-size: 1.1rem; color: #fff;">
-            Starting at ₹50,000 / day
-          </div>
-          <a href="book.html" class="btn" style="margin-top: auto; text-align: center;">Inquire Now</a>
-        </div>
-      </div>
-
-      <!-- Venue 2 -->
-      <div style="background: var(--ink-soft); border: 1px solid rgba(212, 175, 55, 0.1); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column;">
-        <img src="https://dummyimage.com/600x400/1a1a1a/d4af37&text=Venue" alt="Venue" style="width: 100%; height: 250px; object-fit: cover;">
-        <div style="padding: 24px; display: flex; flex-direction: column; flex-grow: 1;">
-          <h3 style="margin-bottom: 8px; color: var(--gold); font-size: 1.5rem;">Grand Heritage Hotel</h3>
-          <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-bottom: 16px; display: flex; align-items: center; gap: 6px;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-            Station Road, Sikar
-          </p>
-          <div style="margin-bottom: 20px; font-size: 0.95rem;">
-            <strong style="color: #fff;">Highlights:</strong> AC Halls, 300-person capacity, In-house Catering, Premium Suites
-          </div>
-          <div style="margin-bottom: 24px; font-weight: 600; font-size: 1.1rem; color: #fff;">
-            Starting at ₹35,000 / day
-          </div>
-          <a href="book.html" class="btn" style="margin-top: auto; text-align: center;">Inquire Now</a>
-        </div>
-      </div>
-
-      <!-- Venue 3 -->
-      <div style="background: var(--ink-soft); border: 1px solid rgba(212, 175, 55, 0.1); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column;">
-        <img src="https://dummyimage.com/600x400/1a1a1a/d4af37&text=Venue" alt="Venue" style="width: 100%; height: 250px; object-fit: cover;">
-        <div style="padding: 24px; display: flex; flex-direction: column; flex-grow: 1;">
-          <h3 style="margin-bottom: 8px; color: var(--gold); font-size: 1.5rem;">The Oasis Resort</h3>
-          <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-bottom: 16px; display: flex; align-items: center; gap: 6px;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-            Highway 11, Fatehpur
-          </p>
-          <div style="margin-bottom: 20px; font-size: 0.95rem;">
-            <strong style="color: #fff;">Highlights:</strong> Lush Green Lawns, 1000+ person capacity, Open-air Stage, Kids Area
-          </div>
-          <div style="margin-bottom: 24px; font-weight: 600; font-size: 1.1rem; color: #fff;">
-            Starting at ₹75,000 / day
-          </div>
-          <a href="book.html" class="btn" style="margin-top: auto; text-align: center;">Inquire Now</a>
-        </div>
-      </div>
-
-    </div>
+    <div class="venue-grid" id="venueGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; margin-top: 40px;"></div>
   </div>
 </section>
 
