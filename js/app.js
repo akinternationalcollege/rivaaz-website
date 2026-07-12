@@ -63,15 +63,18 @@ let localStr = localStorage.getItem(STORAGE_KEY);
 if (localStr) {
   try {
     let parsed = JSON.parse(localStr);
+    let changed = false;
     if (!parsed.venues || parsed.venues.length === 0) {
         parsed.venues = DEFAULT_DATA.venues;
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
-        siteData.venues = DEFAULT_DATA.venues;
-      }
-      if (!parsed.professionals || parsed.professionals.length < 18) {
+        changed = true;
+    }
+    if (!parsed.professionals || parsed.professionals.length < 18) {
       parsed.professionals = DEFAULT_DATA.professionals;
+      changed = true;
+    }
+    if (changed) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
-      siteData.professionals = DEFAULT_DATA.professionals; // Sync local object immediately
+      siteData = parsed;
     }
   } catch(e) {}
 } else {
