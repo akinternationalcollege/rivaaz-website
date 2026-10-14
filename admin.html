@@ -51,6 +51,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/global.css">
+  <!-- jsPDF & Fuse.js CDNs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
 </head>
 <body>
 
@@ -112,13 +115,60 @@
       <div id="adminVenueList"></div>
     </div>
     <div class="admin-section" id="tabHero">
-      <div id="heroForm" style="max-width:480px;">
+      <div id="heroForm" style="max-width:540px;">
         <div class="field"><label>WhatsApp Number (jahan booking/vendor requests aayengi)</label><input type="text" id="adminWhatsapp" placeholder="91XXXXXXXXXX"></div>
         <p style="color:var(--ivory-dim); font-size:0.78rem; margin:-10px 0 20px;">Country code ke saath, bina + ya space ke. Jaise Jaipur ka number: 91XXXXXXXXXX</p>
         <div class="field"><label>Main Heading</label><input type="text" id="adminHeroTitle"></div>
         <div class="field"><label>Highlighted Word (gold mein dikhega)</label><input type="text" id="adminHeroHighlight"></div>
         <div class="field"><label>Subtitle</label><textarea id="adminHeroSub"></textarea></div>
-        <button type="button" class="btn" id="heroSubmitBtn">Save Karein</button>
+
+        <!-- Feature Controls & Config -->
+        <div style="margin-top:35px; padding-top:25px; border-top:1px solid rgba(212,175,55,0.25);">
+          <h3 style="font-family:'Cormorant Garamond',serif; color:var(--gold-bright); font-size:1.8rem; margin-bottom:12px;">Feature Controls &amp; Automation</h3>
+          <p style="color:var(--ivory-dim); font-size:0.85rem; margin-bottom:20px;">Toggle automated tools and set custom ratios for quotes, staffing calculator, and AI chatbot.</p>
+
+          <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:24px; background:rgba(0,0,0,0.3); padding:16px 20px; border-radius:12px; border:1px solid rgba(255,255,255,0.05);">
+            <label style="display:flex; align-items:center; gap:10px; cursor:pointer; color:var(--ivory); font-weight:600; text-transform:none; letter-spacing:0; font-size:0.92rem;">
+              <input type="checkbox" id="adminFeaturePdf" style="width:18px; height:18px; accent-color:var(--gold); cursor:pointer;">
+              Enable PDF Quote Generator (book.html)
+            </label>
+            <label style="display:flex; align-items:center; gap:10px; cursor:pointer; color:var(--ivory); font-weight:600; text-transform:none; letter-spacing:0; font-size:0.92rem;">
+              <input type="checkbox" id="adminFeatureCalc" style="width:18px; height:18px; accent-color:var(--gold); cursor:pointer;">
+              Enable Event Staffing Calculator (index.html &amp; book.html)
+            </label>
+            <label style="display:flex; align-items:center; gap:10px; cursor:pointer; color:var(--ivory); font-weight:600; text-transform:none; letter-spacing:0; font-size:0.92rem;">
+              <input type="checkbox" id="adminFeatureAi" style="width:18px; height:18px; accent-color:var(--gold); cursor:pointer;">
+              Enable AI Assistant Floating Widget
+            </label>
+          </div>
+
+          <h4 style="color:var(--gold); font-size:1.1rem; margin-bottom:12px; font-family:'Manrope',sans-serif;">Staffing Calculator Ratios (Mehmaan prati Staff)</h4>
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:24px;">
+            <div class="field" style="margin-bottom:0;">
+              <label style="font-size:0.75rem;">Guests / Waiter</label>
+              <input type="number" id="adminCalcGuestsPerWaiter" min="5" max="200" placeholder="25">
+            </div>
+            <div class="field" style="margin-bottom:0;">
+              <label style="font-size:0.75rem;">Guests / Cook</label>
+              <input type="number" id="adminCalcGuestsPerCook" min="10" max="500" placeholder="100">
+            </div>
+            <div class="field" style="margin-bottom:0;">
+              <label style="font-size:0.75rem;">Guests / Security</label>
+              <input type="number" id="adminCalcGuestsPerSecurity" min="20" max="1000" placeholder="200">
+            </div>
+          </div>
+
+          <h4 style="color:var(--gold); font-size:1.1rem; margin-bottom:12px; font-family:'Manrope',sans-serif;">PDF Quote Settings</h4>
+          <div class="field"><label>PDF Header Title</label><input type="text" id="adminPdfTitle" placeholder="Rivaaz - Event Estimate"></div>
+          <div class="field"><label>PDF Terms &amp; Conditions Note</label><textarea id="adminPdfTerms" placeholder="Valid for 7 days. Subject to staff availability."></textarea></div>
+
+          <h4 style="color:var(--gold); font-size:1.1rem; margin-bottom:12px; font-family:'Manrope',sans-serif;">Google Gemini AI Settings</h4>
+          <div class="field"><label>Google Gemini API Key (optional)</label><input type="password" id="adminAiApiKey" placeholder="AIzaSy..."></div>
+          <p style="color:var(--ivory-dim); font-size:0.78rem; margin:-10px 0 15px;">Leaves AI disabled if empty. Get key from Google AI Studio.</p>
+          <div class="field"><label>AI Prompt Context</label><textarea id="adminAiContext" rows="3" placeholder="You are the AI Assistant for Rivaaz Event Management in Laxmangarh/Sikar..."></textarea></div>
+        </div>
+
+        <button type="button" class="btn" id="heroSubmitBtn" style="margin-top:15px; width:100%;">Save Karein</button>
       </div>
     </div>
     <div class="admin-section" id="tabBookings">

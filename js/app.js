@@ -9,6 +9,47 @@ const AVATAR_COLORS = ['#5C1A23','#204B3F','#8a6d1f'];
 const GOOGLE_SHEETS_WEBHOOK_URL = '';
 
 /**
+ * Feature 4: Silent Error & Bug Reporter
+ * Automatically reports uncaught JS runtime errors and unhandled promise rejections to webhook.
+ */
+function reportSilentError(errorData) {
+  if (!GOOGLE_SHEETS_WEBHOOK_URL) return;
+  try {
+    const payload = {
+      type: 'error_report',
+      timestamp: new Date().toISOString(),
+      url: window.location.href,
+      userAgent: navigator.userAgent,
+      ...errorData
+    };
+    fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).catch(() => {});
+  } catch (err) {}
+}
+
+window.onerror = function(message, source, lineno, colno, error) {
+  reportSilentError({
+    message: String(message),
+    source: String(source),
+    lineno: lineno,
+    colno: colno,
+    stack: error && error.stack ? error.stack : ''
+  });
+  return false;
+};
+
+window.onunhandledrejection = function(event) {
+  reportSilentError({
+    message: event.reason ? (event.reason.message || String(event.reason)) : 'Unhandled Promise Rejection',
+    stack: event.reason && event.reason.stack ? event.reason.stack : ''
+  });
+};
+
+/**
  * Asynchronously compresses and converts an image File to a web-friendly Base64 Data URL
  * via HTML5 Canvas to prevent LocalStorage QuotaExceededError.
  */
@@ -92,7 +133,25 @@ const DEFAULT_DATA = {
     {id:'t1', quote:'Shaadi se 2 din pehle dancer cancel hua, Rivaaz se 4 ghante mein replacement mil gaya.', who:'Neha Agarwal', where:'Jaipur · Wedding, 400 guests'},
     {id:'t2', quote:'Security aur waiter dono ek hi platform se book kiye — bahut time bacha.', who:'Rohit Malhotra', where:'Delhi · Corporate Event'},
     {id:'t3', quote:'Mehndi artist ka kaam itna accha tha ki poore function mein tareef hi tareef mili.', who:'Simran Kaur', where:'Chandigarh · Sangeet'}
-  ]
+  ],
+  features: {
+    pdfQuotesEnabled: true,
+    calculatorEnabled: true,
+    aiAssistantEnabled: false
+  },
+  calculatorRules: {
+    guestsPerWaiter: 25,
+    guestsPerCook: 100,
+    guestsPerSecurity: 200
+  },
+  pdfSettings: {
+    headerTitle: 'Rivaaz - Event Estimate',
+    termsNote: 'Valid for 7 days. Subject to staff availability.'
+  },
+  aiSettings: {
+    apiKey: '',
+    promptContext: 'You are the AI Assistant for Rivaaz Event Management in Laxmangarh/Sikar.'
+  }
 };
 
 let siteData = JSON.parse(JSON.stringify(DEFAULT_DATA));
@@ -129,6 +188,22 @@ if (localStr) {
     }
     if (!parsed.whatsappNumber) {
       parsed.whatsappNumber = DEFAULT_DATA.whatsappNumber;
+      changed = true;
+    }
+    if (!parsed.features) {
+      parsed.features = DEFAULT_DATA.features;
+      changed = true;
+    }
+    if (!parsed.calculatorRules) {
+      parsed.calculatorRules = DEFAULT_DATA.calculatorRules;
+      changed = true;
+    }
+    if (!parsed.pdfSettings) {
+      parsed.pdfSettings = DEFAULT_DATA.pdfSettings;
+      changed = true;
+    }
+    if (!parsed.aiSettings) {
+      parsed.aiSettings = DEFAULT_DATA.aiSettings;
       changed = true;
     }
     
@@ -212,6 +287,18 @@ async function loadAll(){
       }
       if (!loadedData.whatsappNumber) {
         loadedData.whatsappNumber = DEFAULT_DATA.whatsappNumber;
+      }
+      if (!loadedData.features) {
+        loadedData.features = DEFAULT_DATA.features;
+      }
+      if (!loadedData.calculatorRules) {
+        loadedData.calculatorRules = DEFAULT_DATA.calculatorRules;
+      }
+      if (!loadedData.pdfSettings) {
+        loadedData.pdfSettings = DEFAULT_DATA.pdfSettings;
+      }
+      if (!loadedData.aiSettings) {
+        loadedData.aiSettings = DEFAULT_DATA.aiSettings;
       }
       siteData = loadedData;
       saveSite();
@@ -384,24 +471,43 @@ function renderHero(){
   document.getElementById('heroTitle').innerHTML = `${siteData.hero.title} <em>${siteData.hero.highlight}</em>`;
   document.getElementById('heroSub').textContent = siteData.hero.sub;
 }
-function renderCategories(){
+function renderCategories(filterList = null){
   if(!document.getElementById('catGrid')) return;
   const grid = document.getElementById('catGrid');
   const select = document.getElementById('heroServiceSelect');
-  grid.innerHTML=''; select.innerHTML='<option value="">Koi bhi service</option>';
-  document.getElementById('statCount').textContent = siteData.categories.length + '+';
-  siteData.categories.forEach(c=>{
+  grid.innerHTML='';
+  if (select && select.children.length <= 1) {
+    select.innerHTML='<option value="">Koi bhi service</option>';
+  }
+  const catsToRender = filterList || siteData.categories;
+  if(document.getElementById('statCount')) document.getElementById('statCount').textContent = siteData.categories.length + '+';
+
+  if (catsToRender.length === 0) {
+    grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; color: var(--ivory-dim); padding: 40px 20px;">Koi matching category nahi mili. Dobara search karein.</div>';
+    return;
+  }
+
+  catsToRender.forEach(c=>{
     const card=document.createElement('div'); card.className='cat-card';
     card.innerHTML=`<svg class="cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="${c.icon}"/></svg><h3>${c.name}</h3><div class="rate">Starting <b>${c.rate}</b></div>`;
     card.addEventListener('click', ()=>openBooking(c.name));
     grid.appendChild(card);
-    const opt=document.createElement('option'); opt.value=c.name; opt.textContent=c.name; select.appendChild(opt);
+    if(select && !filterList) {
+      const opt=document.createElement('option'); opt.value=c.name; opt.textContent=c.name; select.appendChild(opt);
+    }
   });
 }
-function renderProfessionals(){
+function renderProfessionals(filterList = null){
   if(!document.getElementById('proRow')) return;
   const row=document.getElementById('proRow'); row.innerHTML='';
-  siteData.professionals.forEach((p,i)=>{
+  const prosToRender = filterList || siteData.professionals;
+
+  if (prosToRender.length === 0) {
+    row.innerHTML = '<div style="width:100%; text-align:center; color:var(--ivory-dim); padding:40px 20px;">Koi matching professional nahi mila.</div>';
+    return;
+  }
+
+  prosToRender.forEach((p,i)=>{
     const card=document.createElement('div'); card.className='pro-card';
     const avatarHtml = p.pic
       ? `<img src="${p.pic}" alt="${p.name}" class="avatar" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold);">`
@@ -468,6 +574,15 @@ if(heroSearchBtn) heroSearchBtn.addEventListener('click', ()=>{
   const city = document.getElementById('heroCity').value;
   const date = document.getElementById('heroDate').value;
 
+  if (service && document.getElementById('catGrid')) {
+    // Perform fuzzy search highlight on current page
+    const matchedCats = searchWithFuzzy(service, siteData.categories, ['name']);
+    renderCategories(matchedCats);
+    const catSection = document.getElementById('categories');
+    if (catSection) catSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
+  }
+
   if(document.getElementById('bookingFormWrap')) {
     openBooking(service);
     if(document.getElementById('bkCity')) document.getElementById('bkCity').value = city;
@@ -495,6 +610,12 @@ if(bookingSubmitBtnEl) bookingSubmitBtnEl.addEventListener('click', async()=>{
   const phone=document.getElementById('bkPhone').value.trim();
   const city=document.getElementById('bkCity').value.trim();
   if(!name||!phone||!city){ showToast('Naam, phone aur city zaroori hain.'); return; }
+  if(!validateIndianPhone(phone)){
+    showToast('Kripya valid 10-digit Indian phone number daalein.');
+    const el = document.getElementById('bkPhone');
+    if(el) { el.classList.remove('phone-valid'); el.classList.add('phone-invalid'); el.focus(); }
+    return;
+  }
   const lead = {
     id:'lead_'+Date.now(), type:'booking',
     service:document.getElementById('bkService').value,
@@ -551,6 +672,17 @@ if(bookingSubmitBtnEl) bookingSubmitBtnEl.addEventListener('click', async()=>{
     const successMsg = document.getElementById('bookingSuccessMsg');
     if(successMsg) successMsg.textContent = 'Hum jaldi contact karenge.';
   }
+
+  // Bind success modal PDF download if enabled
+  const successPdfBtn = document.getElementById('successDownloadPdfBtn');
+  if(successPdfBtn) {
+    if(siteData.features && siteData.features.pdfQuotesEnabled) {
+      successPdfBtn.style.display = 'block';
+      successPdfBtn.onclick = () => generatePdfQuote(lead);
+    } else {
+      successPdfBtn.style.display = 'none';
+    }
+  }
 });
 enableEnterSubmit('bookingModal','bookingSubmitBtn');
 
@@ -568,6 +700,12 @@ if(vendorSubmitBtnEl) vendorSubmitBtnEl.addEventListener('click', async()=>{
   const city=document.getElementById('vCity').value.trim();
   const category=document.getElementById('vCategory').value.trim();
   if(!name||!phone||!city||!category){ showToast('Naam, phone, city aur category zaroori hain.'); return; }
+  if(!validateIndianPhone(phone)){
+    showToast('Kripya valid 10-digit Indian phone number daalein.');
+    const el = document.getElementById('vPhone');
+    if(el) { el.classList.remove('phone-valid'); el.classList.add('phone-invalid'); el.focus(); }
+    return;
+  }
   const v = {
     id:'lead_'+Date.now(), type:'vendor',
     name, phone, city, category,
@@ -659,6 +797,44 @@ function openAdmin(){
     document.getElementById('adminHeroTitle').value=siteData.hero.title;
     document.getElementById('adminHeroHighlight').value=siteData.hero.highlight;
     document.getElementById('adminHeroSub').value=siteData.hero.sub;
+
+    // Feature Toggles
+    if(document.getElementById('adminFeaturePdf')) {
+      document.getElementById('adminFeaturePdf').checked = !!(siteData.features && siteData.features.pdfQuotesEnabled);
+    }
+    if(document.getElementById('adminFeatureCalc')) {
+      document.getElementById('adminFeatureCalc').checked = !!(siteData.features && siteData.features.calculatorEnabled);
+    }
+    if(document.getElementById('adminFeatureAi')) {
+      document.getElementById('adminFeatureAi').checked = !!(siteData.features && siteData.features.aiAssistantEnabled);
+    }
+
+    // Staffing Calculator Ratios
+    if(document.getElementById('adminCalcGuestsPerWaiter')) {
+      document.getElementById('adminCalcGuestsPerWaiter').value = (siteData.calculatorRules && siteData.calculatorRules.guestsPerWaiter) || 25;
+    }
+    if(document.getElementById('adminCalcGuestsPerCook')) {
+      document.getElementById('adminCalcGuestsPerCook').value = (siteData.calculatorRules && siteData.calculatorRules.guestsPerCook) || 100;
+    }
+    if(document.getElementById('adminCalcGuestsPerSecurity')) {
+      document.getElementById('adminCalcGuestsPerSecurity').value = (siteData.calculatorRules && siteData.calculatorRules.guestsPerSecurity) || 200;
+    }
+
+    // PDF Quote Settings
+    if(document.getElementById('adminPdfTitle')) {
+      document.getElementById('adminPdfTitle').value = (siteData.pdfSettings && siteData.pdfSettings.headerTitle) || '';
+    }
+    if(document.getElementById('adminPdfTerms')) {
+      document.getElementById('adminPdfTerms').value = (siteData.pdfSettings && siteData.pdfSettings.termsNote) || '';
+    }
+
+    // AI Settings
+    if(document.getElementById('adminAiApiKey')) {
+      document.getElementById('adminAiApiKey').value = (siteData.aiSettings && siteData.aiSettings.apiKey) || '';
+    }
+    if(document.getElementById('adminAiContext')) {
+      document.getElementById('adminAiContext').value = (siteData.aiSettings && siteData.aiSettings.promptContext) || '';
+    }
   }
 }
 function closeAdmin(){
@@ -947,14 +1123,62 @@ if(testiSubmitBtnEl) testiSubmitBtnEl.addEventListener('click', async()=>{
 });
 enableEnterSubmit('testiModal','testiSubmitBtn');
 
-/* Admin: Hero */
+/* Admin: Hero & Features Settings */
 const heroSubmitBtnEl = document.getElementById('heroSubmitBtn');
 if(heroSubmitBtnEl) heroSubmitBtnEl.addEventListener('click', async()=>{
   siteData.whatsappNumber=document.getElementById('adminWhatsapp').value.trim();
   siteData.hero.title=document.getElementById('adminHeroTitle').value;
   siteData.hero.highlight=document.getElementById('adminHeroHighlight').value;
   siteData.hero.sub=document.getElementById('adminHeroSub').value;
-  await saveSite(); renderHero(); updateFloatWaLinks(); showToast('Saved!');
+
+  // Save Feature Toggles
+  if(document.getElementById('adminFeaturePdf')) {
+    siteData.features.pdfQuotesEnabled = document.getElementById('adminFeaturePdf').checked;
+  }
+  if(document.getElementById('adminFeatureCalc')) {
+    siteData.features.calculatorEnabled = document.getElementById('adminFeatureCalc').checked;
+  }
+  if(document.getElementById('adminFeatureAi')) {
+    siteData.features.aiAssistantEnabled = document.getElementById('adminFeatureAi').checked;
+  }
+
+  // Save Calculator Rules
+  if(document.getElementById('adminCalcGuestsPerWaiter')) {
+    const val = parseInt(document.getElementById('adminCalcGuestsPerWaiter').value, 10);
+    if(val > 0) siteData.calculatorRules.guestsPerWaiter = val;
+  }
+  if(document.getElementById('adminCalcGuestsPerCook')) {
+    const val = parseInt(document.getElementById('adminCalcGuestsPerCook').value, 10);
+    if(val > 0) siteData.calculatorRules.guestsPerCook = val;
+  }
+  if(document.getElementById('adminCalcGuestsPerSecurity')) {
+    const val = parseInt(document.getElementById('adminCalcGuestsPerSecurity').value, 10);
+    if(val > 0) siteData.calculatorRules.guestsPerSecurity = val;
+  }
+
+  // Save PDF Settings
+  if(document.getElementById('adminPdfTitle')) {
+    siteData.pdfSettings.headerTitle = document.getElementById('adminPdfTitle').value.trim() || 'Rivaaz - Event Estimate';
+  }
+  if(document.getElementById('adminPdfTerms')) {
+    siteData.pdfSettings.termsNote = document.getElementById('adminPdfTerms').value.trim();
+  }
+
+  // Save AI Settings
+  if(document.getElementById('adminAiApiKey')) {
+    siteData.aiSettings.apiKey = document.getElementById('adminAiApiKey').value.trim();
+  }
+  if(document.getElementById('adminAiContext')) {
+    siteData.aiSettings.promptContext = document.getElementById('adminAiContext').value.trim();
+  }
+
+  await saveSite();
+  renderHero();
+  updateFloatWaLinks();
+  initStaffingCalculator();
+  initPdfQuoteUI();
+  initAiAssistant();
+  showToast('Saved Settings & Automation Rules!');
 });
 
 /* Admin: Leads */
@@ -1084,8 +1308,573 @@ if ('serviceWorker' in navigator) {
 }
 
 
+/**
+ * =====================================================================
+ * FEATURE IMPLEMENTATIONS & AUTOMATIONS
+ * =====================================================================
+ */
+
+/**
+ * Feature 5: Indian Phone & Spam Validation
+ * Enforces valid 10-digit Indian mobile formats (/^[6-9]\d{9}$/)
+ * and filters repetitive spam patterns (9999999999, 1234567890, 0123456789).
+ */
+function validateIndianPhone(phone) {
+  if (!phone) return false;
+  const clean = String(phone).replace(/[\s\-\+\(\)]/g, '').replace(/^91/, '');
+  if (!/^[6-9]\d{9}$/.test(clean)) return false;
+
+  // Reject all identical digits (e.g. 9999999999, 8888888888)
+  if (/^(\d)\1{9}$/.test(clean)) return false;
+
+  // Reject obvious sequential spam
+  const spamSequences = [
+    '1234567890', '0123456789', '9876543210', '0987654321',
+    '6789012345', '7890123456', '8901234567'
+  ];
+  if (spamSequences.includes(clean)) return false;
+
+  return true;
+}
+
+function initPhoneValidationUI() {
+  const phoneInputs = document.querySelectorAll('input[type="tel"], #bkPhone, #vPhone, #proFormPhone');
+  phoneInputs.forEach(input => {
+    const handleValidation = () => {
+      const val = input.value.trim();
+      if (!val) {
+        input.classList.remove('phone-valid', 'phone-invalid');
+        return;
+      }
+      if (validateIndianPhone(val)) {
+        input.classList.add('phone-valid');
+        input.classList.remove('phone-invalid');
+      } else {
+        input.classList.add('phone-invalid');
+        input.classList.remove('phone-valid');
+      }
+    };
+    input.removeEventListener('input', input._phoneValHandler);
+    input._phoneValHandler = handleValidation;
+    input.addEventListener('input', handleValidation);
+    input.addEventListener('blur', handleValidation);
+  });
+}
+
+/**
+ * Feature 1: Toggleable & Customizable PDF Quote Generator
+ * Generates an elegant gold-and-black luxury PDF estimate quote.
+ */
+function generatePdfQuote(customData = null) {
+  if (typeof window.jspdf === 'undefined' || !window.jspdf.jsPDF) {
+    alert('PDF library is loading. Please check your internet connection.');
+    return;
+  }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+
+  // Resolve booking data from form or arguments
+  const service = customData && customData.service ? customData.service : (document.getElementById('bkService')?.value || 'Event Service');
+  const name = customData && customData.name ? customData.name : (document.getElementById('bkName')?.value || 'Valued Client');
+  const phone = customData && customData.phone ? customData.phone : (document.getElementById('bkPhone')?.value || '-');
+  const city = customData && customData.city ? customData.city : (document.getElementById('bkCity')?.value || 'Laxmangarh');
+  const date = customData && customData.date ? customData.date : (document.getElementById('bkDate')?.value || 'Upcoming Event');
+  const notes = customData && customData.notes ? customData.notes : (document.getElementById('bkNotes')?.value || 'Standard booking specifications.');
+
+  // Find matching service rate
+  const matchedCat = siteData.categories?.find(c => c.name.toLowerCase() === service.toLowerCase());
+  const rateText = matchedCat ? matchedCat.rate : 'Standard Event Tariffs Apply';
+
+  const headerTitle = (siteData.pdfSettings && siteData.pdfSettings.headerTitle) || 'Rivaaz - Event Estimate';
+  const termsNote = (siteData.pdfSettings && siteData.pdfSettings.termsNote) || 'Valid for 7 days. Subject to staff availability.';
+
+  // Palette: Dark ink #0D0B08, Luxury Gold #D4AF37, Accent #8A6D1F, Ivory #FAF7F0
+  // Background Fill
+  doc.setFillColor(13, 11, 8);
+  doc.rect(0, 0, 210, 297, 'F');
+
+  // Outer Gold Decorative Border
+  doc.setDrawColor(212, 175, 55);
+  doc.setLineWidth(0.8);
+  doc.rect(10, 10, 190, 277);
+
+  // Inner Subtle Border
+  doc.setDrawColor(138, 109, 31);
+  doc.setLineWidth(0.2);
+  doc.rect(13, 13, 184, 271);
+
+  // Top Header Brand
+  doc.setTextColor(212, 175, 55);
+  doc.setFontSize(26);
+  doc.setFont('helvetica', 'bold');
+  doc.text('RIVAAZ', 20, 28);
+
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(250, 247, 240);
+  doc.text('HAR MEHFIL KE LIYE · THE AK GROUP', 20, 34);
+
+  // Header Title Right-aligned
+  doc.setFontSize(14);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(212, 175, 55);
+  doc.text(headerTitle.toUpperCase(), 190, 28, { align: 'right' });
+
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(180, 180, 180);
+  doc.text(`Estimate Date: ${new Date().toLocaleDateString('en-IN')}`, 190, 34, { align: 'right' });
+
+  // Gold Divider Line
+  doc.setDrawColor(212, 175, 55);
+  doc.setLineWidth(0.5);
+  doc.line(20, 40, 190, 40);
+
+  // Client Details Card Box
+  doc.setFillColor(24, 20, 15);
+  doc.rect(20, 46, 170, 36, 'F');
+  doc.setDrawColor(212, 175, 55);
+  doc.setLineWidth(0.2);
+  doc.rect(20, 46, 170, 36);
+
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(212, 175, 55);
+  doc.text('RECIPIENT & EVENT DETAILS', 26, 54);
+
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(250, 247, 240);
+  doc.text(`Client Name: ${name}`, 26, 62);
+  doc.text(`Contact: ${phone}`, 26, 68);
+  doc.text(`Event City: ${city}`, 26, 74);
+
+  doc.text(`Event Date: ${date}`, 110, 62);
+  doc.text(`Requested Service: ${service}`, 110, 68);
+  doc.text(`Booking Ref: RVZ-${Date.now().toString().slice(-6)}`, 110, 74);
+
+  // Itemized Estimate Table Header
+  const tableY = 94;
+  doc.setFillColor(212, 175, 55);
+  doc.rect(20, tableY, 170, 9, 'F');
+
+  doc.setTextColor(13, 11, 8);
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'bold');
+  doc.text('ITEM / SERVICE SPECIFICATION', 24, tableY + 6);
+  doc.text('LOCATION', 120, tableY + 6);
+  doc.text('BASE TARIFF', 165, tableY + 6);
+
+  // Table Row 1
+  const row1Y = tableY + 9;
+  doc.setFillColor(18, 15, 11);
+  doc.rect(20, row1Y, 170, 18, 'F');
+  doc.setDrawColor(60, 50, 30);
+  doc.setLineWidth(0.2);
+  doc.rect(20, row1Y, 170, 18);
+
+  doc.setTextColor(250, 247, 240);
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'bold');
+  doc.text(service, 24, row1Y + 7);
+
+  doc.setFontSize(8);
+  doc.setFont('helvetica', 'italic');
+  doc.setTextColor(180, 170, 150);
+  doc.text('Professional staff member, verified & trained by AK Group', 24, row1Y + 13);
+
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(250, 247, 240);
+  doc.text(city, 120, row1Y + 9);
+  doc.setTextColor(212, 175, 55);
+  doc.setFont('helvetica', 'bold');
+  doc.text(rateText, 165, row1Y + 9);
+
+  // Additional Specifications / Notes Row
+  const notesBoxY = 130;
+  doc.setFillColor(24, 20, 15);
+  doc.rect(20, notesBoxY, 170, 30, 'F');
+  doc.setDrawColor(212, 175, 55);
+  doc.setLineWidth(0.2);
+  doc.rect(20, notesBoxY, 170, 30);
+
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(212, 175, 55);
+  doc.text('CLIENT SPECIFICATIONS & EVENT NOTES', 26, notesBoxY + 8);
+
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(230, 230, 230);
+  const splitNotes = doc.splitTextToSize(notes || 'No extra notes provided. Standard dispatch.', 160);
+  doc.text(splitNotes, 26, notesBoxY + 16);
+
+  // Terms and Conditions Box
+  const termsY = 172;
+  doc.setFillColor(18, 15, 11);
+  doc.rect(20, termsY, 170, 40, 'F');
+  doc.setDrawColor(138, 109, 31);
+  doc.setLineWidth(0.2);
+  doc.rect(20, termsY, 170, 40);
+
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(212, 175, 55);
+  doc.text('TERMS OF SERVICE & BOOKING POLICIES', 26, termsY + 8);
+
+  doc.setFontSize(8.5);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(200, 200, 200);
+  doc.text(`1. ${termsNote}`, 26, termsY + 16);
+  doc.text('2. All staff members are strictly verified, background-checked, and insured.', 26, termsY + 22);
+  doc.text('3. Overtime hours exceeding booked slots will be prorated according to standard category rates.', 26, termsY + 28);
+  doc.text('4. Official confirmation occurs upon advance booking sync via Rivaaz WhatsApp dispatch.', 26, termsY + 34);
+
+  // Footer / Contact signature
+  const footerY = 250;
+  doc.setDrawColor(212, 175, 55);
+  doc.setLineWidth(0.3);
+  doc.line(20, footerY, 190, footerY);
+
+  doc.setTextColor(212, 175, 55);
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'bold');
+  doc.text('RIVAAZ EVENT MANAGEMENT', 20, footerY + 8);
+
+  doc.setTextColor(180, 180, 180);
+  doc.setFontSize(8.5);
+  doc.setFont('helvetica', 'normal');
+  doc.text(`Laxmangarh, Sikar, Rajasthan · WhatsApp: +${getActiveWaNumber()}`, 20, footerY + 14);
+  doc.text('Web: www.rivaaz.work.gd · Email: contact@rivaaz.work.gd', 20, footerY + 20);
+
+  doc.setTextColor(212, 175, 55);
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'bold');
+  doc.text('AUTHORIZED DISPATCH', 190, footerY + 10, { align: 'right' });
+  doc.setFontSize(8);
+  doc.setTextColor(180, 180, 180);
+  doc.setFont('helvetica', 'normal');
+  doc.text('Digitally generated official estimate', 190, footerY + 16, { align: 'right' });
+
+  // Save the generated PDF
+  const filename = `Rivaaz_Quote_${(name || 'Customer').replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
+  doc.save(filename);
+  showToast('PDF Quote generated successfully!');
+}
+
+function initPdfQuoteUI() {
+  const isEnabled = siteData.features && siteData.features.pdfQuotesEnabled;
+  const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+  if (downloadPdfBtn) {
+    if (isEnabled) {
+      downloadPdfBtn.style.display = 'block';
+      downloadPdfBtn.onclick = () => {
+        const phone = document.getElementById('bkPhone')?.value.trim();
+        if (phone && !validateIndianPhone(phone)) {
+          showToast('Kripya valid 10-digit phone number daalein PDF quote ke liye.');
+          document.getElementById('bkPhone')?.focus();
+          return;
+        }
+        generatePdfQuote();
+      };
+    } else {
+      downloadPdfBtn.style.display = 'none';
+    }
+  }
+
+  const successPdfBtn = document.getElementById('successDownloadPdfBtn');
+  if (successPdfBtn) {
+    successPdfBtn.style.display = isEnabled ? 'block' : 'none';
+  }
+}
+
+/**
+ * Feature 2: Toggleable & Adjustable Event Staffing Calculator
+ * Dynamically computes waiters, cooks, and security guards based on siteData.calculatorRules.
+ */
+function initStaffingCalculator() {
+  const calcSection = document.getElementById('staffingCalculatorSection');
+  if (!calcSection) return;
+
+  const isEnabled = siteData.features && siteData.features.calculatorEnabled;
+  calcSection.style.display = isEnabled ? 'block' : 'none';
+  if (!isEnabled) return;
+
+  const guestInput = document.getElementById('calcGuestInput');
+  const waitersEl = document.getElementById('calcWaiters');
+  const cooksEl = document.getElementById('calcCooks');
+  const securityEl = document.getElementById('calcSecurity');
+  const applyBtn = document.getElementById('applyCalcBtn');
+
+  const updateCalculations = () => {
+    const guests = Math.max(1, parseInt(guestInput.value, 10) || 0);
+    const rules = siteData.calculatorRules || { guestsPerWaiter: 25, guestsPerCook: 100, guestsPerSecurity: 200 };
+
+    const waiters = Math.ceil(guests / (rules.guestsPerWaiter || 25));
+    const cooks = Math.max(1, Math.ceil(guests / (rules.guestsPerCook || 100)));
+    const security = Math.max(1, Math.ceil(guests / (rules.guestsPerSecurity || 200)));
+
+    if (waitersEl) waitersEl.textContent = waiters;
+    if (cooksEl) cooksEl.textContent = cooks;
+    if (securityEl) securityEl.textContent = security;
+  };
+
+  if (guestInput) {
+    guestInput.removeEventListener('input', guestInput._calcHandler);
+    guestInput._calcHandler = updateCalculations;
+    guestInput.addEventListener('input', updateCalculations);
+    updateCalculations();
+  }
+
+  if (applyBtn) {
+    applyBtn.onclick = () => {
+      const guests = parseInt(guestInput?.value, 10) || 200;
+      const waiters = waitersEl ? waitersEl.textContent : '8';
+      const cooks = cooksEl ? cooksEl.textContent : '2';
+      const security = securityEl ? securityEl.textContent : '1';
+      const staffNotes = `Staff Recommendation for ${guests} guests: ${waiters} Waiters, ${cooks} Cooks, ${security} Security Guards.`;
+
+      const bkNotes = document.getElementById('bkNotes');
+      if (bkNotes) {
+        bkNotes.value = (bkNotes.value ? bkNotes.value + '\n' : '') + staffNotes;
+        bkNotes.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        showToast('Staff count applied to booking form!');
+      } else {
+        openBooking('Waiter', null);
+        setTimeout(() => {
+          const notesField = document.getElementById('bkNotes');
+          if (notesField) {
+            notesField.value = staffNotes;
+            showToast('Staff count applied to booking form!');
+          }
+        }, 150);
+      }
+    };
+  }
+}
+
+/**
+ * Feature 3: Hinglish Fuzzy Search Engine
+ * Uses Fuse.js (threshold: 0.4) to match Hinglish phonetic terms
+ * (e.g. "vaiter", "cheff", "sekurity", "mehindi").
+ */
+function searchWithFuzzy(query, list, keys) {
+  if (!query || !query.trim()) return list;
+  if (typeof Fuse !== 'undefined') {
+    const fuse = new Fuse(list, {
+      keys: keys,
+      threshold: 0.4,
+      distance: 100,
+      minMatchCharLength: 2,
+      ignoreLocation: true
+    });
+    return fuse.search(query.trim()).map(r => r.item);
+  }
+  // Fallback to substring matching
+  const q = query.toLowerCase().trim();
+  return list.filter(item => {
+    return keys.some(key => {
+      const val = item[key];
+      return typeof val === 'string' && val.toLowerCase().includes(q);
+    });
+  });
+}
+
+/**
+ * Feature 6: Geo-Location Auto City Picker
+ * Automatically selects the nearest regional city in dropdowns using navigator.geolocation.
+ */
+function autoDetectCity() {
+  if (!navigator.geolocation) return;
+
+  // Regional coordinates for supported towns
+  const CITY_COORDS = [
+    { name: 'Laxmangarh', lat: 27.8228, lon: 75.0253 },
+    { name: 'Sikar', lat: 27.6094, lon: 75.1398 },
+    { name: 'Salasar', lat: 27.7196, lon: 74.8327 },
+    { name: 'Fatehpur', lat: 27.9839, lon: 74.9547 },
+    { name: 'Nawalgarh', lat: 27.8504, lon: 75.2713 },
+    { name: 'Mukundgarh', lat: 27.9472, lon: 75.2281 },
+    { name: 'Dhod', lat: 27.5794, lon: 74.9658 },
+    { name: 'Nechhwa', lat: 27.6322, lon: 74.8872 },
+    { name: 'Ramgarh Shekhawati', lat: 28.1697, lon: 75.0315 },
+    { name: 'Sujangarh', lat: 27.7011, lon: 74.4566 }
+  ];
+
+  navigator.geolocation.getCurrentPosition((pos) => {
+    const userLat = pos.coords.latitude;
+    const userLon = pos.coords.longitude;
+
+    // Haversine formula to compute nearest city
+    const toRad = deg => (deg * Math.PI) / 180;
+    let minDistance = Infinity;
+    let nearestCity = null;
+
+    CITY_COORDS.forEach(c => {
+      const dLat = toRad(c.lat - userLat);
+      const dLon = toRad(c.lon - userLon);
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(toRad(userLat)) * Math.cos(toRad(c.lat)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const dist = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      if (dist < minDistance) {
+        minDistance = dist;
+        nearestCity = c.name;
+      }
+    });
+
+    if (nearestCity) {
+      const citySelects = document.querySelectorAll('#heroCity, #bkCity, #vCity');
+      citySelects.forEach(select => {
+        // Only override if user hasn't selected another city yet
+        if (select && select.value !== nearestCity) {
+          select.value = nearestCity;
+        }
+      });
+      console.log(`Auto-detected nearest city: ${nearestCity}`);
+    }
+  }, (err) => {
+    // Permission denied or unavailable — quietly ignore
+  }, { timeout: 8000, maximumAge: 3600000 });
+}
+
+/**
+ * Feature 7: Toggleable AI Assistant Widget
+ * Injects a floating AI Chatbot widget anchored at the bottom corner that connects
+ * to Google Gemini 2.5 Flash API using siteData.aiSettings.
+ */
+let aiChatHistory = [];
+
+function initAiAssistant() {
+  const existingWidget = document.getElementById('rivaazAiWidget');
+  const isEnabled = siteData.features && siteData.features.aiAssistantEnabled;
+  const apiKey = (siteData.aiSettings && siteData.aiSettings.apiKey) ? siteData.aiSettings.apiKey.trim() : '';
+
+  if (!isEnabled || !apiKey) {
+    if (existingWidget) existingWidget.remove();
+    return;
+  }
+
+  if (existingWidget) return; // Already initialized
+
+  const widget = document.createElement('div');
+  widget.id = 'rivaazAiWidget';
+  widget.innerHTML = `
+    <div class="ai-chat-window" id="aiChatWindow">
+      <div class="ai-chat-header">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div style="width:10px; height:10px; border-radius:50%; background:#25D366; box-shadow:0 0 6px #25D366;"></div>
+          <span>Rivaaz AI Assistant</span>
+        </div>
+        <button class="ai-chat-close" id="aiChatCloseBtn" aria-label="Close Chat">&times;</button>
+      </div>
+      <div class="ai-chat-messages" id="aiChatMessages">
+        <div class="ai-msg ai-msg-bot">
+          Namaste! Rivaaz Event Management mein aapka swagat hai. Main aapki kya madad kar sakta hoon?
+        </div>
+      </div>
+      <div class="ai-chat-input-row">
+        <input type="text" id="aiChatInput" placeholder="Apna sawaal likhein..." autocomplete="off">
+        <button class="ai-chat-send" id="aiChatSendBtn" aria-label="Send Message">&#10148;</button>
+      </div>
+    </div>
+    <button class="ai-fab-btn pulse" id="aiFabBtn" aria-label="Open AI Assistant">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+      <span>AI Help</span>
+    </button>
+  `;
+  document.body.appendChild(widget);
+
+  const fab = document.getElementById('aiFabBtn');
+  const chatWindow = document.getElementById('aiChatWindow');
+  const closeBtn = document.getElementById('aiChatCloseBtn');
+  const inputEl = document.getElementById('aiChatInput');
+  const sendBtn = document.getElementById('aiChatSendBtn');
+  const messagesEl = document.getElementById('aiChatMessages');
+
+  fab.addEventListener('click', () => {
+    chatWindow.classList.toggle('active');
+    if (chatWindow.classList.contains('active')) {
+      inputEl.focus();
+    }
+  });
+
+  closeBtn.addEventListener('click', () => {
+    chatWindow.classList.remove('active');
+  });
+
+  const sendMessage = async () => {
+    const text = inputEl.value.trim();
+    if (!text) return;
+    inputEl.value = '';
+
+    // Append user message
+    const userMsg = document.createElement('div');
+    userMsg.className = 'ai-msg ai-msg-user';
+    userMsg.textContent = text;
+    messagesEl.appendChild(userMsg);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+
+    aiChatHistory.push({ role: 'user', parts: [{ text }] });
+
+    // Append loading indicator
+    const botLoading = document.createElement('div');
+    botLoading.className = 'ai-msg ai-msg-bot';
+    botLoading.innerHTML = '<span class="ai-typing">Soch raha hoon...</span>';
+    messagesEl.appendChild(botLoading);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+
+    const systemContext = (siteData.aiSettings && siteData.aiSettings.promptContext) ||
+      'You are the AI Assistant for Rivaaz Event Management in Laxmangarh/Sikar. Respond politely in natural Hinglish or Hindi. Keep answers helpful and concise.';
+
+    try {
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+      const payload = {
+        contents: [
+          { role: 'user', parts: [{ text: `System Instructions: ${systemContext}` }] },
+          { role: 'model', parts: [{ text: 'Samajh gaya. Main Rivaaz Event Management ka AI Assistant hoon aur customers ki madad karne ke liye taiyar hoon.' }] },
+          ...aiChatHistory
+        ]
+      };
+
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json();
+      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Kshama karein, main abhi is sawaal ka uttar nahi de pa raha hoon. Kripya WhatsApp par contact karein.';
+
+      botLoading.textContent = reply;
+      aiChatHistory.push({ role: 'model', parts: [{ text: reply }] });
+    } catch (err) {
+      botLoading.textContent = 'Network error. Kripya hamari team se WhatsApp par connect karein: +' + getActiveWaNumber();
+    }
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  };
+
+  sendBtn.addEventListener('click', sendMessage);
+  inputEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+}
+
+// Master Automation Initialization on DOM Ready
 window.addEventListener('DOMContentLoaded', () => {
-  updateFloatWaLinks();
+  initPhoneValidationUI();
+  initPdfQuoteUI();
+  initStaffingCalculator();
+  autoDetectCity();
+  initAiAssistant();
+
+  // Handle URL query parameters for booking form
   if(document.getElementById('bookingFormWrap')) {
     const params = new URLSearchParams(window.location.search);
     const service = params.get('service');
