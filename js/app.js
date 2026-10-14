@@ -1545,7 +1545,7 @@ function generatePdfQuote(customData = null) {
   doc.setTextColor(180, 180, 180);
   doc.setFontSize(8.5);
   doc.setFont('helvetica', 'normal');
-  doc.text(`Laxmangarh, Sikar, Rajasthan · WhatsApp: +${getActiveWaNumber()}`, 20, footerY + 14);
+  doc.text(`Laxmangarh, Sikar, Rajasthan · WhatsApp: +${getActiveWaNumber()} | +91 9460825584 | +91 9460835584`, 20, footerY + 14);
   doc.text('Web: www.rivaaz.work.gd · Email: contact@rivaaz.work.gd', 20, footerY + 20);
 
   doc.setTextColor(212, 175, 55);
