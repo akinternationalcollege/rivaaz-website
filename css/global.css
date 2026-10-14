@@ -183,4 +183,65 @@
   ::-webkit-calendar-picker-indicator:hover { opacity: 1; }
   input[type="date"]::-webkit-datetime-edit { padding: 4px; }
 
+  /* Loading Shimmer Skeletons */
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  .skeleton-card {
+    position: relative;
+    overflow: hidden;
+    background: var(--ink-card);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 24px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+
+  .skeleton-line {
+    border-radius: 6px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(212,175,55,0.12) 50%, rgba(255,255,255,0.03) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.8s infinite linear;
+  }
+
+  .skeleton-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .skeleton-title {
+    height: 22px;
+    width: 65%;
+  }
+
+  .skeleton-subtitle {
+    height: 14px;
+    width: 45%;
+  }
+
+  .skeleton-text {
+    height: 14px;
+    width: 90%;
+  }
+
+  .skeleton-btn {
+    height: 38px;
+    width: 100%;
+    border-radius: 4px;
+    margin-top: 10px;
+  }
+
+  .skeleton-venue-img {
+    height: 220px;
+    width: 100%;
+    border-radius: 12px;
+  }
+
 

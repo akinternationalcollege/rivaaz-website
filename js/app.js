@@ -5,6 +5,45 @@ const ADMIN_PIN = '9414';
 const DEFAULT_ICON_PATH = 'M12 2l2.9 6.5 7.1.7-5.4 4.7 1.6 7-6.2-3.9-6.2 3.9 1.6-7L2 9.2l7.1-.7z';
 const AVATAR_COLORS = ['#5C1A23','#204B3F','#8a6d1f'];
 
+// Configurable Cloud Webhook URL for Google Sheets / CRM lead synchronization
+const GOOGLE_SHEETS_WEBHOOK_URL = '';
+
+/**
+ * Asynchronously compresses and converts an image File to a web-friendly Base64 Data URL
+ * via HTML5 Canvas to prevent LocalStorage QuotaExceededError.
+ */
+function compressAndConvertImage(file, maxWidth = 1080, quality = 0.7) {
+  return new Promise((resolve, reject) => {
+    if (!file || !file.type.startsWith('image/')) {
+      return reject(new Error('Invalid image file'));
+    }
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onerror = reject;
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        // Convert to web-friendly JPEG data url with specified quality
+        const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+        resolve(compressedDataUrl);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 const DEFAULT_DATA = {
   whatsappNumber: '6376213281',
   hero: { title:'Book the people who make every celebration', highlight:'unforgettable.', sub:'Waiter se dancer tak, mehndi se security tak — apni shaadi, party ya event ke liye verified professionals ghanto ya din ke hisaab se, turant book karein.' },
@@ -149,6 +188,7 @@ async function withRetry(fn){
 }
 
 async function loadAll(){
+  renderSkeletons();
   renderAll(); // site is usable immediately with defaults, storage load is a background upgrade
 
   try{
@@ -205,6 +245,84 @@ async function saveLeads(){
 }
 
 
+// Helpers for Shimmer Loading Skeletons
+function renderSkeletons() {
+  const catGrid = document.getElementById('catGrid');
+  if (catGrid && catGrid.children.length === 0) {
+    catGrid.innerHTML = Array(6).fill(0).map(() => `
+      <div class="skeleton-card">
+        <div class="skeleton-line" style="width: 42px; height: 42px; border-radius: 8px;"></div>
+        <div class="skeleton-line skeleton-title"></div>
+        <div class="skeleton-line skeleton-subtitle"></div>
+      </div>
+    `).join('');
+  }
+
+  const proRow = document.getElementById('proRow');
+  if (proRow && proRow.children.length === 0) {
+    proRow.innerHTML = Array(6).fill(0).map(() => `
+      <div class="skeleton-card">
+        <div style="display: flex; gap: 16px; align-items: flex-start;">
+          <div class="skeleton-line skeleton-avatar"></div>
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 8px;">
+            <div class="skeleton-line skeleton-title"></div>
+            <div class="skeleton-line skeleton-subtitle"></div>
+            <div class="skeleton-line skeleton-text"></div>
+          </div>
+        </div>
+        <div class="skeleton-line skeleton-btn"></div>
+      </div>
+    `).join('');
+  }
+
+  const venueGrid = document.getElementById('venueGrid');
+  if (venueGrid && venueGrid.children.length === 0) {
+    venueGrid.innerHTML = Array(3).fill(0).map(() => `
+      <div class="skeleton-card" style="padding: 16px;">
+        <div class="skeleton-line skeleton-venue-img"></div>
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px;">
+          <div class="skeleton-line skeleton-title"></div>
+          <div class="skeleton-line skeleton-subtitle"></div>
+          <div class="skeleton-line skeleton-text"></div>
+          <div class="skeleton-line skeleton-btn"></div>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
+// Function to resolve recipient WhatsApp number dynamically
+function getActiveWaNumber() {
+  const raw = (siteData && siteData.whatsappNumber) ? siteData.whatsappNumber : '6376213281';
+  const clean = raw.replace(/[^0-9]/g, '');
+  if (clean.length === 10) return '91' + clean;
+  return clean || '916376213281';
+}
+
+function updateFloatWaLinks() {
+  const waNumber = getActiveWaNumber();
+  const floatWaBtns = document.querySelectorAll('.float-wa');
+  floatWaBtns.forEach(btn => {
+    btn.href = `https://wa.me/${waNumber}?text=${encodeURIComponent('Hi Rivaaz team, mujhe kuch help chahiye!')}`;
+  });
+}
+
+// Helper to push leads asynchronously to Google Sheets Webhook without blocking the UI
+async function syncLeadToCloud(leadData) {
+  if (!GOOGLE_SHEETS_WEBHOOK_URL) return;
+  try {
+    await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(leadData)
+    });
+    console.log('Lead synced to cloud webhook successfully');
+  } catch (err) {
+    console.warn('Could not sync lead to cloud webhook:', err);
+  }
+}
+
 // Render Venues (Public)
 function renderVenues() {
   const vList = document.getElementById('venueGrid');
@@ -259,7 +377,7 @@ function renderVenues() {
 }
 
 function renderAll(){
-  renderHero(); renderCategories(); renderProfessionals(); renderTestimonials(); renderVenues(); }
+  renderHero(); renderCategories(); renderProfessionals(); renderTestimonials(); renderVenues(); updateFloatWaLinks(); }
 
 function renderHero(){
   if(!document.getElementById('heroTitle')) return;
@@ -299,7 +417,7 @@ function renderProfessionals(){
         </div>
       </div>
       <div class="pro-card-bottom">
-        <a href="tel:+916376213281" class="action-btn btn-call" onclick="event.stopPropagation()">📞 Call</a>
+        <a href="tel:+${getActiveWaNumber()}" class="action-btn btn-call" onclick="event.stopPropagation()">📞 Call</a>
         <button class="action-btn btn-book" onclick="openBooking('${p.role}', '${p.name}'); event.stopPropagation()">Book Now</button>
       </div>
     `;
@@ -408,8 +526,11 @@ if(bookingSubmitBtnEl) bookingSubmitBtnEl.addEventListener('click', async()=>{
   document.getElementById('bookingFormWrap').style.display='none';
   document.getElementById('bookingSuccessWrap').style.display='block';
 
-  // Hardcoded WhatsApp destination number
-  const waNumber = '916376213281';
+  // Dynamic WhatsApp destination number resolved from siteData
+  const waNumber = getActiveWaNumber();
+
+  // Non-blocking sync to cloud webhook
+  syncLeadToCloud(lead);
 
   const waLink = buildWaLink(waNumber, `Naya Booking Request — Rivaaz\nService: ${lead.service||'-'}\nNaam: ${lead.name}\nPhone: ${lead.phone}\nCity: ${lead.city}\nDate: ${lead.date||'-'}\nNotes: ${lead.notes||'-'}`);
   if(waLink){
@@ -476,8 +597,11 @@ if(vendorSubmitBtnEl) vendorSubmitBtnEl.addEventListener('click', async()=>{
   document.getElementById('vendorFormWrap').style.display='none';
   document.getElementById('vendorSuccessWrap').style.display='block';
 
-  // Use the admin set WhatsApp number, fallback to default if not set
-  const waNumber = siteData.whatsappNumber || '6376213281';
+  // Dynamic WhatsApp destination number resolved from siteData
+  const waNumber = getActiveWaNumber();
+
+  // Non-blocking sync to cloud webhook
+  syncLeadToCloud(v);
 
   const waLink = buildWaLink(waNumber, `Naya Professional Signup — Rivaaz\nNaam: ${v.name}\nPhone: ${v.phone}\nCity: ${v.city}\nCategory: ${v.category}\nExperience: ${v.exp||'-'} years`);
   if(waLink){
@@ -648,30 +772,44 @@ document.getElementById('venueSubmitBtn')?.addEventListener('click', () => {
 
 const venueFileInput = document.getElementById('venueFileInput');
 if (venueFileInput) {
-  venueFileInput.addEventListener('change', (e) => {
-    const files = e.target.files;
+  venueFileInput.addEventListener('change', async (e) => {
+    const files = Array.from(e.target.files);
     if (files.length > 20) {
       alert('You can only upload up to 20 images at a time.');
       return;
     }
     uploadedVenueBase64Pics = [];
     const venueImagePreview = document.getElementById('venueImagePreview');
-    venueImagePreview.innerHTML = '';
+    venueImagePreview.innerHTML = '<span style="color:var(--gold); font-size:0.85rem;">Processing & compressing images...</span>';
 
-    Array.from(files).forEach(file => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const base64Str = e.target.result;
-        uploadedVenueBase64Pics.push(base64Str);
+    try {
+      const compressedUrls = await Promise.all(files.map(file => {
+        // If image compressor helper is available, compress & downscale to max 1080px / 0.7 quality
+        if (file.type && file.type.startsWith('image/')) {
+          return compressAndConvertImage(file, 1080, 0.7);
+        }
+        return new Promise((res, rej) => {
+          const reader = new FileReader();
+          reader.onload = (ev) => res(ev.target.result);
+          reader.onerror = rej;
+          reader.readAsDataURL(file);
+        });
+      }));
+
+      uploadedVenueBase64Pics = compressedUrls;
+      venueImagePreview.innerHTML = '';
+      compressedUrls.forEach(base64Str => {
         const img = document.createElement('img');
         img.src = base64Str;
         img.style.height = '60px';
         img.style.borderRadius = '4px';
         img.style.objectFit = 'cover';
         venueImagePreview.appendChild(img);
-      };
-      reader.readAsDataURL(file);
-    });
+      });
+    } catch(err) {
+      console.error('Image compression failed:', err);
+      venueImagePreview.innerHTML = '<span style="color:#e66; font-size:0.85rem;">Image compression failed. Please try again.</span>';
+    }
   });
 }
 
@@ -816,7 +954,7 @@ if(heroSubmitBtnEl) heroSubmitBtnEl.addEventListener('click', async()=>{
   siteData.hero.title=document.getElementById('adminHeroTitle').value;
   siteData.hero.highlight=document.getElementById('adminHeroHighlight').value;
   siteData.hero.sub=document.getElementById('adminHeroSub').value;
-  await saveSite(); renderHero(); showToast('Saved!');
+  await saveSite(); renderHero(); updateFloatWaLinks(); showToast('Saved!');
 });
 
 /* Admin: Leads */
@@ -947,6 +1085,7 @@ if ('serviceWorker' in navigator) {
 
 
 window.addEventListener('DOMContentLoaded', () => {
+  updateFloatWaLinks();
   if(document.getElementById('bookingFormWrap')) {
     const params = new URLSearchParams(window.location.search);
     const service = params.get('service');
