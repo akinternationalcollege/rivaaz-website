@@ -87,10 +87,10 @@ function compressAndConvertImage(file, maxWidth = 1080, quality = 0.7) {
 
 const DEFAULT_DATA = {
   whatsappNumber: '6376213281',
-  hero: { title:'Book the people who make every celebration', highlight:'unforgettable.', sub:'Waiter se dancer tak, mehndi se security tak — apni shaadi, party ya event ke liye verified professionals ghanto ya din ke hisaab se, turant book karein.' },
-  
+  hero: { title:'Book the people who make every celebration', highlight:'unforgettable.', sub:'Waiter se dancer tak, mehndi se security tak — Salasar, Sikar, Jaipur aur poore Rajasthan mein verified professionals ghanto ya din ke hisaab se turant book karein.' },
+
   venues: [
-    {id:'v1', name:'The Royal Palace Ground', location:'Sikar Road, Laxmangarh', attractions:'Poolside, 500-person capacity, Grand Banquet, Valet Parking', price:'Starting at ₹50,000 / day', pics:['https://dummyimage.com/600x400/1a1a1a/d4af37&text=Venue']},
+    {id:'v1', name:'The Royal Palace Ground', location:'Salasar Dham Road, Salasar', attractions:'Poolside, 500-person capacity, Grand Banquet, Valet Parking', price:'Starting at ₹50,000 / day', pics:['https://dummyimage.com/600x400/1a1a1a/d4af37&text=Venue']},
     {id:'v2', name:'Grand Heritage Hotel', location:'Station Road, Sikar', attractions:'AC Halls, 300-person capacity, In-house Catering, Premium Suites', price:'Starting at ₹35,000 / day', pics:['https://dummyimage.com/600x400/1a1a1a/d4af37&text=Venue']},
     {id:'v3', name:'The Oasis Resort', location:'Highway 11, Fatehpur', attractions:'Lush Green Lawns, 1000+ person capacity, Open-air Stage, Kids Area', price:'Starting at ₹75,000 / day', pics:['https://dummyimage.com/600x400/1a1a1a/d4af37&text=Venue']}
   ],
@@ -110,24 +110,24 @@ const DEFAULT_DATA = {
     {id:'c13', name:'Bodyguard / Security', rate:'₹400/hr', icon:'M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z'}
   ],
   professionals: [
-    {id:'p1', name:'HARISH KUMAR', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
-    {id:'p2', name:'HIMANSHU', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
-    {id:'p3', name:'JANMEJAY SHARMA', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
-    {id:'p4', name:'MANOJ MAHRIYA', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
-    {id:'p5', name:'POOJA KUMARI', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
-    {id:'p6', name:'RAJKUMAR', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
-    {id:'p7', name:'VIKRAM NAYAK', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
-    {id:'p8', name:'YUVRAJ AJAY BALAN KUMAR', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
-    {id:'p9', name:'ASHOK KUMAR', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
-    {id:'p10', name:'DINESH', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
-    {id:'p11', name:'JEEVAN', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
-    {id:'p12', name:'KRISHAN KUMAR', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
-    {id:'p13', name:'MAITRYEE SHARMA', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
-    {id:'p14', name:'MUNESH SAINI KUMAR', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
-    {id:'p15', name:'PANKAJ KUMAR', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
-    {id:'p16', name:'RAHUL', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
-    {id:'p17', name:'RAJESH KUMAR', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
-    {id:'p18', name:'VIKRAM POONIA', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Laxmangarh', rating:'4.9', rate:'₹200/hr', phone:'919876543210'}
+    {id:'p1', name:'HARISH KUMAR', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Salasar', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p2', name:'HIMANSHU', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Salasar', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p3', name:'JANMEJAY SHARMA', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Salasar', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p4', name:'MANOJ MAHRIYA', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Salasar', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p5', name:'POOJA KUMARI', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Salasar', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p6', name:'RAJKUMAR', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Salasar', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p7', name:'VIKRAM NAYAK', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Salasar', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p8', name:'YUVRAJ AJAY BALAN KUMAR', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Salasar', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p9', name:'ASHOK KUMAR', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Salasar', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p10', name:'DINESH', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Salasar', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p11', name:'JEEVAN', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Salasar', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p12', name:'KRISHAN KUMAR', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Salasar', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p13', name:'MAITRYEE SHARMA', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Salasar', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p14', name:'MUNESH SAINI KUMAR', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Salasar', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p15', name:'PANKAJ KUMAR', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Salasar', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p16', name:'RAHUL', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Salasar', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p17', name:'RAJESH KUMAR', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Salasar', rating:'4.9', rate:'₹200/hr', phone:'919876543210'},
+    {id:'p18', name:'VIKRAM POONIA', role:'Hospitality Professional', experience:'2 Years', pic:'https://dummyimage.com/200x200/d4af37/050505&text=Pro', city:'Salasar', rating:'4.9', rate:'₹200/hr', phone:'919876543210'}
   ],
   testimonials: [
     {id:'t1', quote:'Shaadi se 2 din pehle dancer cancel hua, Rivaaz se 4 ghante mein replacement mil gaya.', who:'Neha Agarwal', where:'Jaipur · Wedding, 400 guests'},
@@ -150,7 +150,7 @@ const DEFAULT_DATA = {
   },
   aiSettings: {
     apiKey: '',
-    promptContext: 'You are the AI Assistant for Rivaaz Event Management in Laxmangarh/Sikar.'
+    promptContext: 'You are the AI Assistant for Rivaaz (Rivaj) Event Management & Rojgar Services in Salasar, Sikar, Jaipur & all over Rajasthan.'
   }
 };
 
@@ -204,6 +204,23 @@ if (localStr) {
     }
     if (!parsed.aiSettings) {
       parsed.aiSettings = DEFAULT_DATA.aiSettings;
+      changed = true;
+    } else if (!parsed.aiSettings.promptContext || parsed.aiSettings.promptContext.includes('Laxmangarh')) {
+      parsed.aiSettings.promptContext = DEFAULT_DATA.aiSettings.promptContext;
+      changed = true;
+    }
+    if (parsed.hero && parsed.hero.sub && parsed.hero.sub.includes('apni shaadi, party')) {
+      parsed.hero.sub = DEFAULT_DATA.hero.sub;
+      changed = true;
+    }
+    if (parsed.professionals && parsed.professionals.length > 0 && parsed.professionals[0].city === 'Laxmangarh') {
+      parsed.professionals.forEach(p => {
+        if (p.city === 'Laxmangarh') p.city = 'Salasar';
+      });
+      changed = true;
+    }
+    if (parsed.venues && parsed.venues.length > 0 && parsed.venues[0].location && parsed.venues[0].location.includes('Laxmangarh')) {
+      parsed.venues[0].location = DEFAULT_DATA.venues[0].location;
       changed = true;
     }
     
@@ -1377,7 +1394,7 @@ function generatePdfQuote(customData = null) {
   const service = customData && customData.service ? customData.service : (document.getElementById('bkService')?.value || 'Event Service');
   const name = customData && customData.name ? customData.name : (document.getElementById('bkName')?.value || 'Valued Client');
   const phone = customData && customData.phone ? customData.phone : (document.getElementById('bkPhone')?.value || '-');
-  const city = customData && customData.city ? customData.city : (document.getElementById('bkCity')?.value || 'Laxmangarh');
+  const city = customData && customData.city ? customData.city : (document.getElementById('bkCity')?.value || 'Salasar');
   const date = customData && customData.date ? customData.date : (document.getElementById('bkDate')?.value || 'Upcoming Event');
   const notes = customData && customData.notes ? customData.notes : (document.getElementById('bkNotes')?.value || 'Standard booking specifications.');
 
@@ -1545,7 +1562,7 @@ function generatePdfQuote(customData = null) {
   doc.setTextColor(180, 180, 180);
   doc.setFontSize(8.5);
   doc.setFont('helvetica', 'normal');
-  doc.text(`Laxmangarh, Sikar, Rajasthan · WhatsApp: +${getActiveWaNumber()} | +91 9460825584 | +91 9460835584`, 20, footerY + 14);
+  doc.text(`Salasar, Sikar, Rajasthan · WhatsApp: +${getActiveWaNumber()} | +91 9460825584 | +91 9460835584`, 20, footerY + 14);
   doc.text('Web: www.rivaaz.work.gd · Email: contact@rivaaz.work.gd', 20, footerY + 20);
 
   doc.setTextColor(212, 175, 55);
@@ -1690,9 +1707,11 @@ function autoDetectCity() {
 
   // Regional coordinates for supported towns
   const CITY_COORDS = [
-    { name: 'Laxmangarh', lat: 27.8228, lon: 75.0253 },
-    { name: 'Sikar', lat: 27.6094, lon: 75.1398 },
     { name: 'Salasar', lat: 27.7196, lon: 74.8327 },
+    { name: 'Sikar', lat: 27.6094, lon: 75.1398 },
+    { name: 'Jaipur', lat: 26.9124, lon: 75.7873 },
+    { name: 'Rajasthan (All Over)', lat: 27.0238, lon: 74.2179 },
+    { name: 'Laxmangarh', lat: 27.8228, lon: 75.0253 },
     { name: 'Fatehpur', lat: 27.9839, lon: 74.9547 },
     { name: 'Nawalgarh', lat: 27.8504, lon: 75.2713 },
     { name: 'Mukundgarh', lat: 27.9472, lon: 75.2281 },
@@ -1771,11 +1790,19 @@ function initAiAssistant() {
       </div>
       <div class="ai-chat-messages" id="aiChatMessages">
         <div class="ai-msg ai-msg-bot">
-          Namaste! Rivaaz Event Management mein aapka swagat hai. Main aapki kya madad kar sakta hoon?
+          Namaste! Rivaaz (Rivaj) Event Management &amp; Rojgar mein aapka swagat hai. Main aapki kya madad kar sakta hoon?
         </div>
       </div>
       <div class="ai-chat-input-row">
-        <input type="text" id="aiChatInput" placeholder="Apna sawaal likhein..." autocomplete="off">
+        <input type="text" id="aiChatInput" placeholder="Apna sawaal likhein ya bol kar batayein..." autocomplete="off">
+        <button type="button" class="ai-chat-mic" id="aiChatMicBtn" aria-label="Voice Input" title="Bol kar sawaal poochein">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+            <line x1="12" y1="19" x2="12" y2="23"></line>
+            <line x1="8" y1="23" x2="16" y2="23"></line>
+          </svg>
+        </button>
         <button class="ai-chat-send" id="aiChatSendBtn" aria-label="Send Message">&#10148;</button>
       </div>
     </div>
@@ -1793,6 +1820,7 @@ function initAiAssistant() {
   const closeBtn = document.getElementById('aiChatCloseBtn');
   const inputEl = document.getElementById('aiChatInput');
   const sendBtn = document.getElementById('aiChatSendBtn');
+  const micBtn = document.getElementById('aiChatMicBtn');
   const messagesEl = document.getElementById('aiChatMessages');
 
   fab.addEventListener('click', () => {
@@ -1828,14 +1856,14 @@ function initAiAssistant() {
     messagesEl.scrollTop = messagesEl.scrollHeight;
 
     const systemContext = (siteData.aiSettings && siteData.aiSettings.promptContext) ||
-      'You are the AI Assistant for Rivaaz Event Management in Laxmangarh/Sikar. Respond politely in natural Hinglish or Hindi. Keep answers helpful and concise.';
+      'You are the AI Assistant for Rivaaz (Rivaj) Event Management & Rojgar Services in Salasar, Sikar, Jaipur & all over Rajasthan. Respond politely in natural Hinglish or Hindi. Keep answers helpful and concise.';
 
     try {
       const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
       const payload = {
         contents: [
           { role: 'user', parts: [{ text: `System Instructions: ${systemContext}` }] },
-          { role: 'model', parts: [{ text: 'Samajh gaya. Main Rivaaz Event Management ka AI Assistant hoon aur customers ki madad karne ke liye taiyar hoon.' }] },
+          { role: 'model', parts: [{ text: 'Samajh gaya. Main Rivaaz (Rivaj) Event Management & Rojgar Services ka AI Assistant hoon aur customers ki madad karne ke liye taiyar hoon.' }] },
           ...aiChatHistory
         ]
       };
@@ -1864,6 +1892,223 @@ function initAiAssistant() {
       sendMessage();
     }
   });
+
+  // Voice Assistant Mic inside AI Widget
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (micBtn) {
+    if (!SpeechRecognition) {
+      micBtn.addEventListener('click', () => {
+        showToast('Voice input is not supported in this browser. Please use Chrome.');
+      });
+    } else {
+      let aiRec = null;
+      let aiListening = false;
+
+      micBtn.addEventListener('click', () => {
+        if (aiListening && aiRec) {
+          try { aiRec.stop(); } catch(e) {}
+          return;
+        }
+
+        aiRec = new SpeechRecognition();
+        aiRec.lang = 'hi-IN';
+        aiRec.continuous = false;
+        aiRec.interimResults = true;
+
+        aiRec.onstart = () => {
+          aiListening = true;
+          micBtn.classList.add('listening');
+          inputEl.placeholder = 'Sun rahe hain... Boliye...';
+        };
+
+        aiRec.onresult = (event) => {
+          let text = '';
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            text += event.results[i][0].transcript;
+          }
+          if (text) {
+            inputEl.value = text;
+          }
+        };
+
+        aiRec.onend = () => {
+          aiListening = false;
+          micBtn.classList.remove('listening');
+          inputEl.placeholder = 'Apna sawaal likhein ya bol kar batayein...';
+          const spokenText = inputEl.value.trim();
+          if (spokenText) {
+            sendMessage();
+          }
+        };
+
+        aiRec.onerror = (err) => {
+          console.warn('AI Voice recognition error:', err);
+          aiListening = false;
+          micBtn.classList.remove('listening');
+          inputEl.placeholder = 'Apna sawaal likhein ya bol kar batayein...';
+          if (err.error === 'language-not-supported') {
+            aiRec.lang = 'en-IN';
+            try { aiRec.start(); } catch(e) {}
+          }
+        };
+
+        try {
+          aiRec.start();
+        } catch (e) {
+          console.warn('AI voice start error:', e);
+        }
+      });
+    }
+  }
+}
+
+/**
+ * Feature: Meesho-Style Voice Search & Voice Assistant
+ * Integrates Web Speech API (hi-IN fallback to en-IN) with glowing pulsing feedback
+ * and automatic fuzzy search dispatch.
+ */
+function initVoiceSearch() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const heroVoiceBtn = document.getElementById('heroVoiceBtn');
+  const heroServiceSelect = document.getElementById('heroServiceSelect');
+  const heroCity = document.getElementById('heroCity');
+  const voiceBanner = document.getElementById('voiceListeningBanner');
+  const voiceStatusText = document.getElementById('voiceStatusText');
+
+  if (!heroVoiceBtn) return;
+
+  if (!SpeechRecognition) {
+    heroVoiceBtn.addEventListener('click', () => {
+      showToast('Voice Search is not supported in this browser. Please use Chrome.');
+    });
+    return;
+  }
+
+  let recognition = null;
+  let isListening = false;
+
+  function createRecognition(onResult, onEnd, onError) {
+    const rec = new SpeechRecognition();
+    rec.continuous = false;
+    rec.interimResults = true;
+    rec.lang = 'hi-IN';
+    rec.maxAlternatives = 1;
+
+    rec.onresult = onResult;
+    rec.onend = onEnd;
+    rec.onerror = (e) => {
+      if (e.error === 'language-not-supported' && rec.lang !== 'en-IN') {
+        rec.lang = 'en-IN';
+        try { rec.start(); return; } catch(err) {}
+      }
+      if (onError) onError(e);
+    };
+    return rec;
+  }
+
+  heroVoiceBtn.addEventListener('click', () => {
+    if (isListening && recognition) {
+      try { recognition.stop(); } catch(e) {}
+      return;
+    }
+
+    recognition = createRecognition(
+      (event) => {
+        let interimTranscript = '';
+        let finalTranscript = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            finalTranscript += event.results[i][0].transcript;
+          } else {
+            interimTranscript += event.results[i][0].transcript;
+          }
+        }
+
+        const currentText = (finalTranscript || interimTranscript).trim();
+        if (voiceStatusText && currentText) {
+          voiceStatusText.innerHTML = `Sun rahe hain: <b style="color:var(--gold-bright);">"${currentText}"</b>`;
+        }
+
+        if (finalTranscript) {
+          processVoiceQuery(finalTranscript.trim());
+        }
+      },
+      () => {
+        isListening = false;
+        heroVoiceBtn.classList.remove('listening');
+        if (voiceBanner) voiceBanner.style.display = 'none';
+      },
+      (err) => {
+        console.warn('Speech recognition error:', err);
+        isListening = false;
+        heroVoiceBtn.classList.remove('listening');
+        if (voiceBanner) voiceBanner.style.display = 'none';
+        if (err.error !== 'no-speech' && err.error !== 'aborted') {
+          showToast('Voice error: ' + (err.error || 'Dobara try karein'));
+        }
+      }
+    );
+
+    try {
+      recognition.start();
+      isListening = true;
+      heroVoiceBtn.classList.add('listening');
+      if (voiceBanner) {
+        voiceBanner.style.display = 'flex';
+        if (voiceStatusText) {
+          voiceStatusText.textContent = 'Sun rahe hain... Apni zaroorat boliye (jaise "Waiter", "Chef", "Dancer", "Salasar")';
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to start recognition:', e);
+    }
+  });
+
+  function processVoiceQuery(query) {
+    if (!query) return;
+    showToast(`Boliye: "${query}"`);
+
+    const lower = query.toLowerCase();
+
+    // Check if query mentions any city
+    const cities = ['Salasar', 'Sikar', 'Jaipur', 'Rajasthan', 'Laxmangarh', 'Fatehpur', 'Nawalgarh', 'Mukundgarh', 'Dhod', 'Nechhwa', 'Ramgarh Shekhawati', 'Sujangarh'];
+    const matchedCity = cities.find(c => lower.includes(c.toLowerCase()));
+    if (matchedCity && heroCity) {
+      heroCity.value = matchedCity === 'Rajasthan' ? 'Rajasthan (All Over)' : matchedCity;
+    }
+
+    // Fuzzy match against categories
+    if (siteData && siteData.categories && siteData.categories.length) {
+      const results = searchWithFuzzy(query, siteData.categories, ['name']);
+      if (results && results.length > 0) {
+        const bestCat = results[0];
+        if (heroServiceSelect) {
+          heroServiceSelect.value = bestCat.name;
+        }
+        if (document.getElementById('catGrid')) {
+          renderCategories(results);
+          const catSec = document.getElementById('categories');
+          if (catSec) catSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        return;
+      }
+    }
+
+    // Fuzzy match against professionals
+    if (siteData && siteData.professionals && siteData.professionals.length) {
+      const proResults = searchWithFuzzy(query, siteData.professionals, ['name', 'role', 'city']);
+      if (proResults && proResults.length > 0) {
+        renderProfessionals(proResults);
+        const proSec = document.getElementById('professionals');
+        if (proSec) proSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+    }
+
+    // Fallback: trigger heroSearchBtn
+    const heroBtn = document.getElementById('heroSearchBtn');
+    if (heroBtn) heroBtn.click();
+  }
 }
 
 // Master Automation Initialization on DOM Ready
@@ -1873,6 +2118,7 @@ window.addEventListener('DOMContentLoaded', () => {
   initStaffingCalculator();
   autoDetectCity();
   initAiAssistant();
+  initVoiceSearch();
 
   // Handle URL query parameters for booking form
   if(document.getElementById('bookingFormWrap')) {

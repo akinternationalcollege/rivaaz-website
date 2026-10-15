@@ -400,5 +400,103 @@
     .ai-chat-window { left: 16px; right: 16px; width: auto; }
   }
 
+  /* Meesho-Style Voice Search & Voice Assistant Feature */
+  .voice-btn {
+    background: rgba(212, 175, 55, 0.12);
+    border: 1px solid rgba(212, 175, 55, 0.45);
+    color: var(--gold-bright);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 24px;
+    border-radius: 100px;
+    cursor: pointer;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+    outline: none;
+    height: 54px;
+    align-self: center;
+  }
+  .voice-btn:hover {
+    background: rgba(212, 175, 55, 0.25);
+    border-color: var(--gold);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.25);
+  }
+  .voice-btn.listening {
+    background: #ff2a44 !important;
+    color: #fff !important;
+    border-color: #ff6677 !important;
+    box-shadow: 0 0 30px rgba(255, 42, 68, 0.85);
+    animation: micPulseAnim 1.2s infinite ease-in-out;
+  }
+  @keyframes micPulseAnim {
+    0% { transform: scale(1); box-shadow: 0 0 15px rgba(255, 42, 68, 0.6); }
+    50% { transform: scale(1.06); box-shadow: 0 0 35px rgba(255, 42, 68, 0.95); }
+    100% { transform: scale(1); box-shadow: 0 0 15px rgba(255, 42, 68, 0.6); }
+  }
+
+  .voice-listening-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: -38px;
+    margin-bottom: 30px;
+    background: rgba(20, 16, 12, 0.92);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--gold);
+    border-radius: 50px;
+    padding: 12px 28px;
+    color: var(--ivory);
+    font-size: 0.92rem;
+    max-width: 600px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+    z-index: 10;
+  }
+  .pulse-mic-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ff2a44;
+    box-shadow: 0 0 12px #ff2a44;
+    animation: micPulseAnim 0.8s infinite alternate;
+    flex-shrink: 0;
+  }
+
+  /* AI Chat Voice Input */
+  .ai-chat-mic {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    color: var(--gold-bright);
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+    outline: none;
+  }
+  .ai-chat-mic:hover {
+    background: rgba(212, 175, 55, 0.2);
+    border-color: var(--gold);
+  }
+  .ai-chat-mic.listening {
+    background: #ff2a44 !important;
+    color: #fff !important;
+    border-color: #ff6677 !important;
+    box-shadow: 0 0 15px rgba(255, 42, 68, 0.8);
+    animation: micPulseAnim 1.2s infinite ease-in-out;
+  }
+
+
 
 
